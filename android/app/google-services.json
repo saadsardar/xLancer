@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "454427954538",
+    "project_id": "xlancer-a3c26",
+    "storage_bucket": "xlancer-a3c26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454427954538:android:2ade4bd9951574d0afa913",
+        "android_client_info": {
+          "package_name": "com.example.xlancer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454427954538-fk46aqhetaqfdd5qcgatoptru3kuu413.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdGoLaZf9-EgX1iHyhwwjbzT2Lc9ozh9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454427954538-fk46aqhetaqfdd5qcgatoptru3kuu413.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
