@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xlancer/Screens/profile.dart';
 import 'jobs_screen.dart';
 import 'message_screen.dart';
 import 'profile_screen.dart';
@@ -13,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> _pages = [
     JobScreen(),
     MessageScreen(),
-    ProfileScreen(),
+    ProfilePage(),
   ];
 
   int _selectedPageIndex = 0;

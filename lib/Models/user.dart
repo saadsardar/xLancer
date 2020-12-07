@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart' as FirebaseUser;
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
 class User extends ChangeNotifier {
   bool _isLoggedin = false;
 
@@ -29,7 +28,7 @@ class User extends ChangeNotifier {
   });
 
   //google logic
-   Future<String> signInWithGoogle() async {
+  Future<String> signInWithGoogle() async {
     String msg = '';
     try {
       final _auth = FirebaseUser.FirebaseAuth.instance;
@@ -94,6 +93,7 @@ class User extends ChangeNotifier {
 
     //return null;
   }
+
   Future<String> addUserGoogleDetails(Map<String, dynamic> userInfo) async {
     var msg = '';
     try {
@@ -114,6 +114,35 @@ class User extends ChangeNotifier {
     }
     _isLoggedin = true;
     return msg;
+  }
+
+  Future<void> editpicture(Map<String, dynamic> userInfo) async {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(userId).update(
+        {
+          if (userInfo['picture'] != '') 'picture': userInfo['picture'],
+        },
+      );
+      if (userInfo['picture'] != '') picture = userInfo['picture'];
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+    return;
+  }
+    Future<void> editname(Map<String, dynamic> userInfo) async {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(userId).update(
+        {
+          'name': userInfo['name'],
+        },
+      );
+      name = userInfo['name'];
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+    return;
   }
 
   Future<String> signIn(String email1, String pass1) async {

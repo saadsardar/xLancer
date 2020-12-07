@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xlancer/ProfileScreens/picture.dart';
 import 'Models/user.dart';
 import 'Screens/main_screen.dart';
 import 'Screens/register.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           NavigationScreen.routeName: (ctx) => NavigationScreen(),
           RegisterUserGoogleScreen.routeName: (ctx) =>
               RegisterUserGoogleScreen(),
+          EditPicture.routeName: (ctx) => EditPicture(),    
         },
       ),
     );
