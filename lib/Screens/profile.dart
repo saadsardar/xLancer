@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xlancer/Models/freelancer.dart';
 import 'package:xlancer/Models/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:xlancer/ProfileScreens/certficates.dart';
+import 'package:xlancer/ProfileScreens/location.dart';
+import 'package:xlancer/ProfileScreens/name.dart';
 import 'package:xlancer/ProfileScreens/picture.dart';
+import 'package:xlancer/ProfileScreens/portfolio.dart';
+import 'package:xlancer/ProfileScreens/rate.dart';
+import 'package:xlancer/ProfileScreens/skills.dart';
+import 'package:xlancer/ProfileScreens/summary.dart';
+import 'package:xlancer/ProfileScreens/title.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -13,6 +22,69 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final userInfo = Provider.of<User>(context, listen: false);
+    final userInfo2 = Provider.of<Freelancer>(context, listen: false);
+    buildPortfolio() {}
+    buildSlider(List<String> images) {
+      return Container(
+        padding: EdgeInsets.only(left: 20),
+        height: 250.0,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          primary: false,
+          itemCount: images.length == 0
+              ? 0
+              // places == null ? 0 : places.length
+              : images.length,
+          itemBuilder: (BuildContext context, int index) {
+            // Map place = places[index];
+            // if (images.length == 0) {
+            //   place = places[index];
+            // } else {
+            //   // place = images[index];
+            // }
+
+            return Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child:
+                    //     // images.length == 0
+                    //     //     ?
+                    //     Image.asset(
+                    //   "${place["img"]}",
+                    //   height: 250.0,
+                    //   width: MediaQuery.of(context).size.width - 40.0,
+                    //   fit: BoxFit.cover,
+                    // )
+                    // :
+                    Image.network(
+                  images[index],
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                  height: 250.0,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -27,7 +99,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 CircleAvatar(
                   radius: 40,
                   backgroundImage: userInfo.picture == ''
-                      ? Icon(Icons.person)
+                      ? AssetImage(
+                          'assets/portfolio.jpeg',
+                        )
                       : NetworkImage(
                           userInfo.picture,
                         ),
@@ -59,7 +133,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             IconButton(
                               color: Theme.of(context).accentColor,
                               icon: Icon(Icons.edit),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(EditName.routeName)
+                                    .then((value) => setState(() {}));
+                              },
                             ),
                           ],
                         ),
@@ -76,8 +154,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: Text(
-                              'Karachi, Pakistan',
+                            child:
+                                //userInfo2.location == ''
+                                //  ? null
+                                //:
+                                Text(
+                              userInfo2.location ?? 'default value',
+                              // 'Karachi, Pakistan',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -87,7 +170,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           IconButton(
                             color: Theme.of(context).accentColor,
                             icon: Icon(Icons.edit),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(EditLocation.routeName)
+                                  .then((value) => setState(() {}));
+                            },
                           ),
                         ],
                       )
@@ -111,8 +198,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   child: Row(
                     children: [
+                      // userInfo2.title == ''
+                      //     ? null
+                      //:
                       Text(
-                        'Flutter Developer',
+                        userInfo2.title ?? 'default value',
+                        //'Flutter Developer',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -121,7 +212,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       IconButton(
                         color: Theme.of(context).accentColor,
                         icon: Icon(Icons.edit),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(EditTitle.routeName)
+                              .then((value) => setState(() {}));
+                        },
                       ),
                     ],
                   ),
@@ -143,8 +238,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   child: Row(
                     children: [
+                      //userInfo2.rate == ''
+                      //? null
+                      //:
+                      Text('\$'),
                       Text(
-                        '9.00/hr',
+                        userInfo2.rate ?? 'default value',
+                        //'9.00/hr',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -156,7 +256,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: IconButton(
                           color: Theme.of(context).accentColor,
                           icon: Icon(Icons.edit),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(EditRate.routeName)
+                                .then((value) => setState(() {}));
+                          },
                         ),
                       ),
                     ],
@@ -176,8 +280,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Row(
                     children: [
                       Container(
-                        child: Text(
-                          'dsvbihabicbajcoaocadocbadobcoadbuoabcoa',
+                        child:
+                            //userInfo2.summary == ''
+                            //  ? null
+                            //:
+                            Text(
+                          userInfo2.summary ?? 'default value',
+                          //'dsvbihabicbajcoaocadocbadobcoadbuoabcoa',
                           style: TextStyle(
                             fontSize: 15,
                             //fontWeight: FontWeight.bold,
@@ -190,7 +299,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: IconButton(
                           color: Theme.of(context).accentColor,
                           icon: Icon(Icons.edit),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(EditSummary.routeName)
+                                .then((value) => setState(() {}));
+                          },
                         ),
                       ),
                     ],
@@ -242,39 +355,57 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: IconButton(
                           color: Theme.of(context).accentColor,
                           icon: Icon(Icons.add),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(AddPortfolio.routeName)
+                                .then((value) => setState(() {}));
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-                Image.asset(
-                  'assets/portfolio.jpeg',
-                  height: 150,
-                  width: 150,
-                ),
-                Center(
-                  child: Text(
-                    "Showcase your work to impress clients",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: Text(
-                    "Add items",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                // if (userInfo2.portfolio == null)
+                //   {
+                //     Image.asset(
+                //       'assets/portfolio.jpeg',
+                //       height: 150,
+                //       width: 150,
+                //     ),
+                //     Center(
+                //       child: Text(
+                //         "Showcase your work to impress clients",
+                //         style: TextStyle(
+                //           fontSize: 20,
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       height: 10,
+                //     ),
+                //     Center(
+                //       child: RaisedButton(
+                //         onPressed: () {
+                //           Navigator.of(context)
+                //               .pushNamed(AddPortfolio.routeName)
+                //               .then((value) => setState(() {}));
+                //         },
+                //         child: Text(
+                //           "Add items",
+                //           style: TextStyle(
+                //             color: Colors.green,
+                //             fontSize: 20,
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   }
+                // else
+                //   {
+                //     buildSlider(userInfo2.portfolio),
+                //   },
                 SizedBox(
                   height: 10,
                 ),
@@ -324,7 +455,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: IconButton(
                           color: Theme.of(context).accentColor,
                           icon: Icon(Icons.edit),
-                          onPressed: () {},
+                          onPressed: () {
+                            //     Navigator.of(context)
+                            // .pushNamed(EditSkills.routeName)
+                            // .then((value) => setState(() {}));
+                                Navigator.of(context)
+                                .pushNamed(EditSkills.routeName)
+                                .then((value) => setState(() {}));
+                          },
                         ),
                       ),
                     ],
@@ -334,6 +472,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 10,
                 ),
                 //list here which shows skills tags
+                
               ],
             ),
           ),
@@ -383,13 +522,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: IconButton(
                             color: Theme.of(context).accentColor,
                             icon: Icon(Icons.add),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(AddCertificate.routeName)
+                                  .then((value) => setState(() {}));
+                            },
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
+                userInfo2.certifications != null
+                    ? buildSlider(userInfo2.certifications)
+                    : Text(''),
                 SizedBox(
                   height: 10,
                 ),

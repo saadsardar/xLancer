@@ -11,8 +11,9 @@ class MyFeedScreen extends StatelessWidget {
         price: 100.0,
         level: 'intermediate level',
         deadline: 'closes in 1 week',
-        skills:
-            'PHp, Java, JavaScript, Software Architecture, Software testing'),
+        //skills:
+            //'PHp, Java, JavaScript, Software Architecture, Software testing'
+            ),
     Project(
         id: 'p2',
         title: 'KIDS APP ',
@@ -20,8 +21,9 @@ class MyFeedScreen extends StatelessWidget {
         price: 80.0,
         level: 'entry level',
         deadline: 'closes in 3 week',
-        skills:
-            'PHp, Java, JavaScript, Software Architecture, Software testing'),
+        // skills:
+        //     'PHp, Java, JavaScript, Software Architecture, Software testing'
+            ),
     Project(
         id: 'p3',
         title: 'HOME DECOR APP',
@@ -29,8 +31,9 @@ class MyFeedScreen extends StatelessWidget {
         price: 120.0,
         level: 'intermediate level',
         deadline: 'closes in 2 week',
-        skills:
-            'PHp, Java, JavaScript, Software Architecture, Software testing'),
+        // skills:
+        //     'PHp, Java, JavaScript, Software Architecture, Software testing'
+            ),
     Project(
         id: 'p4',
         title: 'SCHOOL MANAGEMENT WEBSITE',
@@ -38,8 +41,9 @@ class MyFeedScreen extends StatelessWidget {
         price: 100.0,
         level: 'entry level',
         deadline: 'closes in 1 month',
-        skills:
-            'PHp, Java, JavaScript, Software Architecture, Software testing'),
+        // skills:
+        //     'PHp, Java, JavaScript, Software Architecture, Software testing'
+            ),
     Project(
         id: 'p5',
         title: 'GRAPHIC DESIGNING',
@@ -47,8 +51,9 @@ class MyFeedScreen extends StatelessWidget {
         price: 150.0,
         level: 'entry level',
         deadline: 'closes in 5 week',
-        skills:
-            'PHp, Java, JavaScript, Software Architecture, Software testing'),
+        // skills:
+        //     'PHp, Java, JavaScript, Software Architecture, Software testing'
+            ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -61,7 +66,8 @@ class MyFeedScreen extends StatelessWidget {
           loadedProjects[i].level,
           loadedProjects[i].deadline,
           loadedProjects[i].description,
-          loadedProjects[i].skills,
+          loadedProjects[i].level,
+          //loadedProjects[i].skills,
         ),
 
         padding: const EdgeInsets.all(10),

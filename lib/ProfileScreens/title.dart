@@ -4,14 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
 
 class EditTitle extends StatefulWidget {
-  static const routeName = '/edit-organization-screen';
+  static const routeName = '/edit-title-screen';
   @override
-  EditTitleState createState() =>
-      EditTitleState();
+  EditTitleState createState() => EditTitleState();
 }
 
-class EditTitleState
-    extends State<EditTitle> {
+class EditTitleState extends State<EditTitle> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formkey = GlobalKey<FormState>();
 
@@ -32,9 +30,8 @@ class EditTitleState
     super.dispose();
   }
 
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     final userDetails = Provider.of<Freelancer>(context);
-  
 
     Widget _nameTextfield() {
       return Padding(
@@ -50,14 +47,12 @@ class EditTitleState
               val.length == 0 ? 'Field Can not be left Empty' : null,
           decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Organization Name',
-              hintText: 'Enter Organization Name',
-              icon: Icon(Icons.person)),
+              labelText: 'Your main skill',
+              hintText: 'What do you do?',
+              icon: Icon(Icons.title)),
         ),
       );
     }
-
-   
 
     void _failSnackbar(String e) {
       final snackBar = SnackBar(
@@ -92,9 +87,9 @@ class EditTitleState
       setState(() {
         _isLoading = false;
       });
-      Navigator.popUntil(
-          context, ModalRoute.withName(Navigator.defaultRouteName));
+      Navigator.pop(context);
     }
+
     Widget _formActionButton() {
       return Padding(
         padding: EdgeInsets.only(top: 20),
@@ -128,10 +123,11 @@ class EditTitleState
               ),
       );
     }
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edit Details'),
+        title: Text('Edit title'),
       ),
       body: Center(
         child: ListView(

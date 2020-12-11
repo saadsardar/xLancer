@@ -2,8 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xlancer/Models/freelancer.dart';
+import 'package:xlancer/Models/project.dart';
+import 'package:xlancer/ProfileScreens/certficates.dart';
+import 'package:xlancer/ProfileScreens/location.dart';
+import 'package:xlancer/ProfileScreens/name.dart';
 import 'package:xlancer/ProfileScreens/picture.dart';
+import 'package:xlancer/ProfileScreens/portfolio.dart';
+import 'package:xlancer/ProfileScreens/rate.dart';
+import 'package:xlancer/ProfileScreens/summary.dart';
+import 'package:xlancer/ProfileScreens/title.dart';
+import 'package:xlancer/Screens/post_job.dart';
+import 'package:xlancer/Screens/uploadProject.dart';
 import 'Models/user.dart';
+import 'ProfileScreens/skills.dart';
 import 'Screens/main_screen.dart';
 import 'Screens/register.dart';
 import 'Screens/registerGoogle.dart';
@@ -25,6 +37,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<User>(create: (_) => User()),
+        ChangeNotifierProvider<Freelancer>(create: (_) => Freelancer()),
+        ChangeNotifierProvider<Project>(create: (_) => Project()),
         //ChangeNotifierProvider<Project>(create: (_) => Project()),
       ],
       child: MaterialApp(
@@ -47,7 +61,18 @@ class MyApp extends StatelessWidget {
           NavigationScreen.routeName: (ctx) => NavigationScreen(),
           RegisterUserGoogleScreen.routeName: (ctx) =>
               RegisterUserGoogleScreen(),
-          EditPicture.routeName: (ctx) => EditPicture(),    
+          EditPicture.routeName: (ctx) => EditPicture(),
+          EditTitle.routeName: (ctx) => EditTitle(),
+          EditName.routeName: (ctx) => EditName(),
+          EditSummary.routeName: (ctx) => EditSummary(),
+          EditRate.routeName: (ctx) => EditRate(),
+          EditLocation.routeName: (ctx) => EditLocation(),
+          AddCertificate.routeName: (ctx) => AddCertificate(),
+          AddPortfolio.routeName: (ctx) => AddPortfolio(),
+          EditSkills.routeName: (ctx) => EditSkills(),
+          NewProjectScreen.routeName: (ctx) => NewProjectScreen(),
+          //PostJob.routeName:(ctx) => PostJob(),
+          //EditSkills.routeName: (ctx) => EditSkills(),
         },
       ),
     );

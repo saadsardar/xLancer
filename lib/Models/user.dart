@@ -108,6 +108,17 @@ class User extends ChangeNotifier {
           'isSignedInWithGoogle': true,
         },
       );
+      await FirebaseFirestore.instance
+          .collection('freelancers')
+          .doc(userId)
+          .set(
+        {
+          'title': '',
+          'location': '',
+          'rate': '',
+          'summary': '',
+        },
+      );
     } catch (e) {
       print(e);
       msg = e.toString();
@@ -120,17 +131,18 @@ class User extends ChangeNotifier {
     try {
       await FirebaseFirestore.instance.collection('users').doc(userId).update(
         {
-          if (userInfo['picture'] != '') 'picture': userInfo['picture'],
+          'picture': userInfo['picture'],
         },
       );
-      if (userInfo['picture'] != '') picture = userInfo['picture'];
+      picture = userInfo['picture'];
     } catch (e) {
       print(e);
     }
     notifyListeners();
     return;
   }
-    Future<void> editname(Map<String, dynamic> userInfo) async {
+
+  Future<void> editname(Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(userId).update(
         {
@@ -188,43 +200,35 @@ class User extends ChangeNotifier {
     return _isLoggedin;
   }
 
-  // Future<String> setUser() async {
-  //   String errormsg = '';
-  //   // print('User ID Before: $userId');
-  //   if (FirebaseUser.FirebaseAuth.instance.currentUser != null) {
-  //     if (userId == null) {
-  //       var currentUser = FirebaseUser.FirebaseAuth.instance.currentUser;
-  //       final id = currentUser.uid;
-  //       userId = id;
-  //     }
-  //     try {
-  //       final userSnap = await FirebaseFirestore.instance
-  //           .collection('users')
-  //           .doc(userId)
-  //           .get();
-  //       final userInfo = userSnap.data();
-  //       name = userInfo['name'];
-  //       email = userInfo['email'];
-  //       phoneNumber = userInfo['phoneNumber'];
-  //       picture = userInfo['picture'];
-  //       // cnic = userInfo['cnic'];
-  //       dob = userInfo['dob'].toDate();
-  //       // creditCardDetails = [];
-  //       // history = [];
-  //       // organizationBio = userInfo['organizationBio'];
-  //       // organizationRegNo = userInfo['name'];
-  //       //isOrganization = userInfo['isOrganization'];
-  //       isSignedInWithGoogle = userInfo['isSignedInWithGoogle'];
-
-  //       //isAdmin = userInfo['isAdmin'];
-  //       //isApproved = userInfo['isApproved'];
-  //     } catch (e) {
-  //       print(e);
-  //       if (e != null) errormsg = e.toString();
-  //     }
-  //   }
-  //   return errormsg;
-  // }
+  Future<String> setUser() async {
+    String errormsg = '';
+    // print('User ID Before: $userId');
+    if (FirebaseUser.FirebaseAuth.instance.currentUser != null) {
+      if (userId == null) {
+        var currentUser = FirebaseUser.FirebaseAuth.instance.currentUser;
+        final id = currentUser.uid;
+        userId = id;
+      }
+      try {
+        final userSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .get();
+        final userInfo = userSnap.data();
+        name = userInfo['name'];
+        email = userInfo['email'];
+        phoneNumber = userInfo['phoneNumber'];
+        picture = userInfo['picture'];
+        dob = userInfo['dob'].toDate();
+        isSignedInWithGoogle = userInfo['isSignedInWithGoogle'];
+        bio = userInfo['bio'];
+      } catch (e) {
+        print(e);
+        if (e != null) errormsg = e.toString();
+      }
+    }
+    return errormsg;
+  }
 
   Future<String> registerUser(
       String emailAdd, String pass, String phoneNum) async {
@@ -271,6 +275,20 @@ class User extends ChangeNotifier {
           'dob': userInfo['dob'],
           'bio': userInfo['bio'],
           'isSignedInWithGoogle': false,
+        },
+      );
+      await FirebaseFirestore.instance
+          .collection('freelancers')
+          .doc(userId)
+          .set(
+        {
+          'title': '',
+          'location': '',
+          'rate': '',
+          'summary': '',
+          'portfolio': '',
+          'skills': '',
+          'certificates': '',
         },
       );
     } catch (e) {

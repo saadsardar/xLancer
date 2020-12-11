@@ -39,8 +39,8 @@ class _EditPictureState extends State<EditPicture> {
             backgroundImage: _pickedimage != null
                 ? FileImage(_pickedimage)
                 : userDetails.picture == ''
-                    ? Icon(Icons.person)
-                    //AssetImage('assets/userIcon.png')
+                    //? Icon(Icons.person)
+                    ?AssetImage('assets/logo.jpg')
                     : NetworkImage(userDetails.picture),
             radius: 60,
           ),
