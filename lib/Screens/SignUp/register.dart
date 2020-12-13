@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xlancer/Screens/SignUp/SignIn/registerGoogle.dart';
+import 'package:xlancer/Screens/SignUp/registerGoogle.dart';
 import 'package:xlancer/Screens/SignUp/registerdetail.dart';
 import 'package:xlancer/Models/user.dart' as UserClass;
 

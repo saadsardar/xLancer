@@ -12,7 +12,7 @@ class Freelancer extends ChangeNotifier {
   List<String> portfolio;
   List<String> skills;
   List<String> certifications;
-  List<String> comments;
+  //List<String> comments;
   String ratings;
   Freelancer({
     this.userId,
@@ -22,7 +22,7 @@ class Freelancer extends ChangeNotifier {
     this.summary,
     this.portfolio,
     this.skills,
-    this.comments,
+    //this.comments,
     this.ratings,
     this.certifications,
   });
@@ -59,9 +59,11 @@ class Freelancer extends ChangeNotifier {
   //   return portfolio;
   // }
 
-
   Future<String> setFreelancer(context) async {
     String errormsg = '';
+    portfolio.remove(true);
+        certifications.remove(true);
+
     // print('User ID Before: $userId');
 
     userId = Provider.of<User>(context, listen: false).userId;
@@ -74,11 +76,35 @@ class Freelancer extends ChangeNotifier {
       location = userInfo['location'];
       title = userInfo['title'];
       summary = userInfo['summary'];
-      portfolio = userInfo['portfolio'];
+      //portfolio = userInfo['portfolio'];
       skills = userInfo['skills'];
-      comments = userInfo['comments'];
+      //comments = userInfo['comments'];
       rate = userInfo['rate'];
-      certifications = userInfo['certifications'];
+      //certifications = userInfo['certifications'];
+
+      final dataSnapshot = await FirebaseFirestore.instance
+          .collection('freelancers/$userId/certicates/')
+          .get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          //map['id'] = e.id;
+          certifications.add(map['link']);
+        },
+      );
+      final dataSnapshot2 = await FirebaseFirestore.instance
+          .collection('freelancers/$userId/portfolio/')
+          .get();
+      final data2 = dataSnapshot2.docs;
+      data2.forEach(
+        (e) {
+          var map2 = e.data();
+          //map['id'] = e.id;
+          portfolio.add(map2['link']);
+          print(map2['link']);
+        },
+      );
     } catch (e) {
       print(e);
       if (e != null) errormsg = e.toString();
@@ -157,7 +183,8 @@ class Freelancer extends ChangeNotifier {
     notifyListeners();
     return;
   }
-    Future<void> editskills(Map<String, dynamic> userInfo) async {
+
+  Future<void> editskills(Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
           .collection('freelancers')
@@ -209,7 +236,7 @@ class Freelancer extends ChangeNotifier {
   //   notifyListeners();
   //   return;
   // }
-    Future<void> addcertificate(Map<String, dynamic> userInfo) async {
+  Future<void> addcertificate(Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
           .collection('freelancers/$userId/certicates/')
@@ -225,7 +252,8 @@ class Freelancer extends ChangeNotifier {
     notifyListeners();
     return;
   }
-    Future<void> addportfolio(Map<String, dynamic> userInfo) async {
+
+  Future<void> addportfolio(Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
           .collection('freelancers/$userId/portfolio/')

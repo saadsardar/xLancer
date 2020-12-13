@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/project.dart';
+import 'package:xlancer/Screens/Projects/project_item.dart';
 
 class SearchResultScreen extends StatelessWidget {
   static const routeName = '/searchResult-screen';
@@ -11,8 +12,8 @@ class SearchResultScreen extends StatelessWidget {
     List<Project> searchedCases;
 
     Future<void> getPatterns() async {
-      searchedCases =
-          await Provider.of<Projects>(context, listen: false).searchProject(pattern);
+      searchedCases = await Provider.of<Projects>(context, listen: false)
+          .searchProject(pattern);
     }
 
     return Scaffold(
@@ -40,8 +41,8 @@ class SearchResultScreen extends StatelessWidget {
                   );
                 } else {
                   return SearchComplete(
-                      searchedCases: searchedCases,
-  );
+                    searchedCases: searchedCases,
+                  );
                 }
               },
             ),
@@ -54,8 +55,7 @@ class SearchResultScreen extends StatelessWidget {
 
 class SearchComplete extends StatelessWidget {
   final searchedCases;
-  SearchComplete(
-      {this.searchedCases});
+  SearchComplete({this.searchedCases});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class SearchComplete extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (searchedCases.length == 0 )
+        if (searchedCases.length == 0)
           Center(
             child: Text(
               'No Results Found.',
@@ -80,12 +80,32 @@ class SearchComplete extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-        if (searchedCases.length > 0) heading('Cases'),
+        if (searchedCases.length > 0) heading('Projects'),
         if (searchedCases.length > 0)
-          buildHorizontalListCases(context, searchedCases),
-        SizedBox(
-          height: 20,
-        ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (ctx, i) => ProjectItem(
+                    searchedCases[i].id,
+                    searchedCases[i].title,
+                    searchedCases[i].description,
+                    searchedCases[i].price,
+                    searchedCases[i].isSaved,
+                    searchedCases[i].level,
+                    searchedCases[i].deadline,
+                    searchedCases[i].ownerId,
+                    searchedCases[i].date,
+                    //loadedProjects[i].skills,
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  itemCount: searchedCases.length,
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }

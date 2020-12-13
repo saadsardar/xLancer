@@ -19,7 +19,7 @@ import 'Screens/Projects/uploadProject.dart';
 import 'Screens/Search/searchResult.dart';
 import 'Screens/SignUp/register.dart';
 import 'Screens/main_screen.dart';
-import 'Screens/SignUp/SignIn/registerGoogle.dart';
+import 'Screens/SignUp/registerGoogle.dart';
 import 'Screens/SignUp/registerdetail.dart';
 import 'Screens/splashScreen.dart';
 import 'home.dart';

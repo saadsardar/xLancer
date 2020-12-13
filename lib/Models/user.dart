@@ -113,10 +113,10 @@ class User extends ChangeNotifier {
           .doc(userId)
           .set(
         {
-          'title': '',
-          'location': '',
-          'rate': '',
-          'summary': '',
+          'title': 'Add your Title',
+          'location': 'Add Location',
+          'rate': '0.00',
+          'summary': 'Add your summary',
         },
       );
     } catch (e) {

@@ -108,7 +108,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 IconButton(
                   color: Theme.of(context).accentColor,
-                  icon: Icon(Icons.edit),
+                  icon: Icon(
+                    Icons.edit,
+                    size: 18,
+                  ),
                   onPressed: () {
                     Navigator.of(context)
                         .pushNamed(EditPicture.routeName)
@@ -126,13 +129,16 @@ class _ProfilePageState extends State<ProfilePage> {
                             Text(
                               userInfo.name,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             IconButton(
                               color: Theme.of(context).accentColor,
-                              icon: Icon(Icons.edit),
+                              icon: Icon(
+                                Icons.edit,
+                                size: 18,
+                              ),
                               onPressed: () {
                                 Navigator.of(context)
                                     .pushNamed(EditName.routeName)
@@ -159,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 //  ? null
                                 //:
                                 Text(
-                              userInfo2.location ?? 'default value',
+                              userInfo2.location ?? 'Choose Location',
                               // 'Karachi, Pakistan',
                               style: TextStyle(
                                 fontSize: 15,
@@ -169,7 +175,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           IconButton(
                             color: Theme.of(context).accentColor,
-                            icon: Icon(Icons.edit),
+                            icon: Icon(
+                              Icons.edit,
+                              size: 18,
+                            ),
                             onPressed: () {
                               Navigator.of(context)
                                   .pushNamed(EditLocation.routeName)
@@ -202,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       //     ? null
                       //:
                       Text(
-                        userInfo2.title ?? 'default value',
+                        userInfo2.title ?? 'Add Title',
                         //'Flutter Developer',
                         style: TextStyle(
                           fontSize: 20,
@@ -211,7 +220,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       IconButton(
                         color: Theme.of(context).accentColor,
-                        icon: Icon(Icons.edit),
+                        icon: Icon(
+                          Icons.edit,
+                          size: 18,
+                        ),
                         onPressed: () {
                           Navigator.of(context)
                               .pushNamed(EditTitle.routeName)
@@ -243,25 +255,24 @@ class _ProfilePageState extends State<ProfilePage> {
                       //:
                       Text('\$'),
                       Text(
-                        userInfo2.rate ?? 'default value',
+                        userInfo2.rate ?? 'Add your Rate',
                         //'9.00/hr',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                          color: Theme.of(context).accentColor,
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(EditRate.routeName)
-                                .then((value) => setState(() {}));
-                          },
+                      IconButton(
+                        color: Theme.of(context).accentColor,
+                        icon: Icon(
+                          Icons.edit,
+                          size: 18,
                         ),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(EditRate.routeName)
+                              .then((value) => setState(() {}));
+                        },
                       ),
                     ],
                   ),
@@ -285,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             //  ? null
                             //:
                             Text(
-                          userInfo2.summary ?? 'default value',
+                          userInfo2.summary ?? 'Add Summary',
                           //'dsvbihabicbajcoaocadocbadobcoadbuoabcoa',
                           style: TextStyle(
                             fontSize: 15,
@@ -293,18 +304,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                          color: Theme.of(context).accentColor,
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(EditSummary.routeName)
-                                .then((value) => setState(() {}));
-                          },
-                        ),
+                      IconButton(
+                        color: Theme.of(context).accentColor,
+                        icon: Icon(Icons.edit, size: 18),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(EditSummary.routeName)
+                              .then((value) => setState(() {}));
+                        },
                       ),
                     ],
                   ),
@@ -365,7 +372,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                // if (userInfo2.portfolio == null)
+                // if (userInfo2.portfolio.isEmpty)
                 //   {
                 //     Image.asset(
                 //       'assets/portfolio.jpeg',
@@ -385,7 +392,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 //       height: 10,
                 //     ),
                 //     Center(
-                //       child: RaisedButton(
+                //       child: FlatButton(
                 //         onPressed: () {
                 //           Navigator.of(context)
                 //               .pushNamed(AddPortfolio.routeName)
@@ -404,8 +411,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 //   }
                 // else
                 //   {
-                //     buildSlider(userInfo2.portfolio),
-                //   },
+                  //   if(userInfo2.portfolio.isEmpty) 
+                  //    Text('data')
+                  //   :
+                  buildSlider(userInfo2.portfolio),
+                  // //},
                 SizedBox(
                   height: 10,
                 ),
@@ -459,7 +469,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             //     Navigator.of(context)
                             // .pushNamed(EditSkills.routeName)
                             // .then((value) => setState(() {}));
-                                Navigator.of(context)
+                            Navigator.of(context)
                                 .pushNamed(EditSkills.routeName)
                                 .then((value) => setState(() {}));
                           },
@@ -472,7 +482,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 10,
                 ),
                 //list here which shows skills tags
-                
               ],
             ),
           ),
