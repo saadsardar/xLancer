@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
 import 'package:xlancer/Models/project.dart';
+import 'package:xlancer/Models/projectinfo.dart';
 import 'package:xlancer/ProfileScreens/certficates.dart';
 import 'package:xlancer/ProfileScreens/location.dart';
 import 'package:xlancer/ProfileScreens/name.dart';
@@ -12,14 +13,14 @@ import 'package:xlancer/ProfileScreens/portfolio.dart';
 import 'package:xlancer/ProfileScreens/rate.dart';
 import 'package:xlancer/ProfileScreens/summary.dart';
 import 'package:xlancer/ProfileScreens/title.dart';
-import 'package:xlancer/Screens/post_job.dart';
-import 'package:xlancer/Screens/uploadProject.dart';
 import 'Models/user.dart';
 import 'ProfileScreens/skills.dart';
+import 'Screens/Projects/uploadProject.dart';
+import 'Screens/Search/searchResult.dart';
+import 'Screens/SignUp/register.dart';
 import 'Screens/main_screen.dart';
-import 'Screens/register.dart';
-import 'Screens/registerGoogle.dart';
-import 'Screens/registerdetail.dart';
+import 'Screens/SignUp/SignIn/registerGoogle.dart';
+import 'Screens/SignUp/registerdetail.dart';
 import 'Screens/splashScreen.dart';
 import 'home.dart';
 
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<User>(create: (_) => User()),
         ChangeNotifierProvider<Freelancer>(create: (_) => Freelancer()),
-        ChangeNotifierProvider<Project>(create: (_) => Project()),
+        ChangeNotifierProvider<Projects>(create: (_) => Projects()),
+        ChangeNotifierProvider<ProjectsInfo>(create: (_) => ProjectsInfo()),
         //ChangeNotifierProvider<Project>(create: (_) => Project()),
       ],
       child: MaterialApp(
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
           RegisterPageUser.routeName: (ctx) => RegisterPageUser(),
           RegisterUserDetailScreen.routeName: (ctx) =>
               RegisterUserDetailScreen(),
-          Home.routeName: (ctx) => Home(),
+          //Home.routeName: (ctx) => Home(),
           MainScreen.routeName: (ctx) => MainScreen(),
           NavigationScreen.routeName: (ctx) => NavigationScreen(),
           RegisterUserGoogleScreen.routeName: (ctx) =>
@@ -71,6 +73,7 @@ class MyApp extends StatelessWidget {
           AddPortfolio.routeName: (ctx) => AddPortfolio(),
           EditSkills.routeName: (ctx) => EditSkills(),
           NewProjectScreen.routeName: (ctx) => NewProjectScreen(),
+          SearchResultScreen.routeName: (ctx) => SearchResultScreen(),
           //PostJob.routeName:(ctx) => PostJob(),
           //EditSkills.routeName: (ctx) => EditSkills(),
         },

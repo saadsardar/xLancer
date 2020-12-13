@@ -1,12 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xlancer/Screens/registerGoogle.dart';
-import 'package:xlancer/Screens/registerdetail.dart';
+import 'package:xlancer/Screens/SignUp/SignIn/registerGoogle.dart';
+import 'package:xlancer/Screens/SignUp/registerdetail.dart';
 import 'package:xlancer/Models/user.dart' as UserClass;
 
-import 'main_screen.dart';
-import 'splashScreen.dart';
+import '../main_screen.dart';
+import '../splashScreen.dart';
+
+
 
 // final GoogleSignIn googleSignIn = GoogleSignIn();
 

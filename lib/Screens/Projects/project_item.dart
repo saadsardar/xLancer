@@ -1,40 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:xlancer/Screens/project_description.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:xlancer/Models/project.dart';
+import 'package:xlancer/Screens/Projects/project_description.dart';
 
-class ProjectItem extends StatelessWidget {
+class ProjectItem extends StatefulWidget {
   final String id;
   final String title;
-  final double price;
-  final String level;
-  final String deadline;
   final String description;
-  final String skills;
+  final String price;
+  bool isSaved;
+  final String level;
+  DateTime deadline;
+  final String ownerId;
+  DateTime date;
 
   ProjectItem(
     this.id,
     this.title,
+    this.description,
     this.price,
+    this.isSaved,
     this.level,
     this.deadline,
-    this.description,
-    this.skills,
+    this.ownerId,
+    this.date,
   );
+
+  @override
+  _ProjectItemState createState() => _ProjectItemState();
+}
+
+class _ProjectItemState extends State<ProjectItem> {
   void func() {
     print("In func");
   }
 
   @override
   Widget build(BuildContext context) {
+    final projects = Provider.of<Projects>(context, listen: false);
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ProjectDescription(
-              title,
-              deadline,
-              price,
-              description,
-              skills,
+              widget.title,
+              widget.description,
+              widget.price,
+              widget.isSaved,
+              widget.level,
+              widget.deadline,
+              widget.ownerId,
+              widget.date,
             ),
           ),
         );
@@ -54,7 +72,7 @@ class ProjectItem extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(13.0),
                     child: Text(
-                      title,
+                      widget.title,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: Colors.black,
@@ -69,30 +87,31 @@ class ProjectItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    print('dislike');
-                    func();
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.lightGreen,
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     print('dislike');
+                //     func();
+                //   },
+                //   child: CircleAvatar(
+                //     backgroundColor: Colors.lightGreen,
+                //     child: Icon(
+                //       Icons.thumb_down,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   width: 5,
                 ),
                 GestureDetector(
                   onTap: () {
-                    print('favourite');
+                    print(widget.id);
+                    projects.deleteProject(widget.id);
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Icon(
-                      Icons.favorite_border,
+                      Icons.delete,
                       color: Colors.red,
                     ),
                   ),
@@ -107,7 +126,7 @@ class ProjectItem extends StatelessWidget {
                 children: [
                   //Icon(Icons.),
                   Text(
-                    '\u{20B9}$price',
+                    '\u{20B9}${widget.price}',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -120,7 +139,7 @@ class ProjectItem extends StatelessWidget {
                     fontWeight: FontWeight.w500),
               ),
               trailing: Text(
-                level,
+                widget.level,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
@@ -131,7 +150,8 @@ class ProjectItem extends StatelessWidget {
                 color: Colors.black,
               ),
               title: Text(
-                deadline,
+                //widget.deadline.toString(),
+                DateFormat('yyyy-MM-dd').format(widget.deadline),
                 style: TextStyle(
                   fontSize: 19,
                   color: Colors.black,

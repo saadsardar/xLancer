@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'SignUp/register.dart';
 import 'main_screen.dart';
-import 'register.dart';
 //import 'package:services_shanapp/Widgets/bottom2.dart';
 
 class SplashScreen extends StatelessWidget {

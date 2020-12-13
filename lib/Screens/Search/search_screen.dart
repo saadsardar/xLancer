@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:xlancer/Widgets/searchbar.dart';
 
 class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('this is my search screen page'),
-      ),
+      body: Column(children: [
+        SearchBar(),
+      ],)
     );
   }
 }

@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:xlancer/Models/project.dart';
 import 'package:xlancer/Models/user.dart';
 
-import 'main_screen.dart';
+import '../main_screen.dart';
+
 
 class NewProjectScreen extends StatefulWidget {
   static const routeName = '/newproject-screen';
@@ -173,7 +174,7 @@ class _NewProjectScreenState extends State<NewProjectScreen> {
       'level': _currentItemSelected,
     };
     print('In Screen $newProject');
-    await Provider.of<Project>(context, listen: false)
+    await Provider.of<Projects>(context, listen: false)
         .addNewProject(newProject);
 
     setState(() {

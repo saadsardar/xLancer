@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/user.dart';
-import 'main_screen.dart';
+
+import '../main_screen.dart';
 
 class RegisterUserGoogleScreen extends StatefulWidget {
   static const routeName = '/register-usergoogle-screen';

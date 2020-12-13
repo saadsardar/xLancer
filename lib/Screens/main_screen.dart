@@ -5,15 +5,14 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
+import 'package:xlancer/Models/project.dart';
 import 'package:xlancer/Models/user.dart';
 import 'package:xlancer/Screens/jobs_screen.dart';
-import 'package:xlancer/Screens/message_screen.dart';
 import 'package:xlancer/Screens/profile.dart';
-import 'package:xlancer/Screens/profile_screen.dart';
-import 'package:xlancer/Screens/uploadProject.dart';
 
+import 'Projects/manageprojects.dart';
+import 'Projects/uploadProject.dart';
 import 'drawer.dart';
-import 'post_job.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = '/main-page';
@@ -51,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  Future<void> setUserLocal(User user, Freelancer freelancer) async {
+  Future<void> setUserLocal(User user, Freelancer freelancer, Projects project) async {
     var msg = '';
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -75,6 +74,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context, listen: false);
     var freelancer = Provider.of<Freelancer>(context, listen: false);
+    var project=Provider.of<Projects>(context, listen: false);
     Widget tryAgainScreen(String msg) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     return FutureBuilder(
-      future: setUserLocal(user, freelancer),
+      future: setUserLocal(user, freelancer, project),
       builder: (ctx, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
           // return Scaffold(
@@ -156,7 +156,7 @@ class _MainScreenState extends State<MainScreen> {
             // ),
             drawer: AppDrawer(),
             body: FutureBuilder(
-              future: setUserLocal(user, freelancer),
+              future: setUserLocal(user, freelancer, project),
               builder: (ctx, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -184,7 +184,7 @@ class _MainScreenState extends State<MainScreen> {
                         index: _currentIndex,
                         children: <Widget>[
                           JobScreen(),
-                          MessageScreen(),
+                          ManageProjectScreen(),
                           NewProjectScreen(),
                           ProfilePage(),
                         ],
@@ -211,9 +211,9 @@ class _MainScreenState extends State<MainScreen> {
                 // // if (user.isOrganization)
                 // BottomNavigationBarItem(label: 'Add', icon: Icon(Icons.add)),
                 BottomNavigationBarItem(
-                    label: 'Messages', icon: Icon(Icons.message)),
+                    label: 'Manage', icon: Icon(Icons.work)),
                     BottomNavigationBarItem(
-                    label: 'Project', icon: Icon(Icons.work),),
+                    label: 'Add Project', icon: Icon(Icons.add),),
                 BottomNavigationBarItem(
                     label: 'Profile', icon: Icon(Icons.person)),
               ],

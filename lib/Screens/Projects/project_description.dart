@@ -1,24 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:xlancer/Models/project.dart';
+import 'package:xlancer/Models/projectinfo.dart';
+import 'package:xlancer/Models/user.dart';
 
 class ProjectDescription extends StatelessWidget {
-  String title;
-  String deadline;
-  double price;
-  String description;
-  String skills;
+  final String title;
+  final String description;
+  final String price;
+  bool isSaved;
+  final String level;
+  DateTime deadline;
+  final String ownerId;
+  DateTime date;
 
   ProjectDescription(
     this.title,
-    this.deadline,
-    this.price,
     this.description,
-    this.skills,
+    this.price,
+    this.isSaved,
+    this.level,
+    this.deadline,
+    this.ownerId,
+    this.date,
   );
   @override
   Widget build(BuildContext context) {
+    final apply = Provider.of<ProjectsInfo>(context, listen: false);
+    final project = Provider.of<Projects>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Project Details'),
+        title: Text(title),
       ),
       body: Column(
         //mainAxisAlignment: MainAxisAlignment.start,
@@ -52,10 +66,11 @@ class ProjectDescription extends StatelessWidget {
               color: Colors.black,
             ),
             title: Text(
-              deadline,
+              // deadline.toString(),
+              DateFormat('yyyy-MM-dd').format(deadline),
               style: TextStyle(
                 fontSize: 19,
-                color: Colors.indigo,
+                color: Colors.green,
               ),
             ),
           ),
@@ -93,7 +108,7 @@ class ProjectDescription extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(13.0),
             child: Text(
-              'Skills Required',
+              'Expirence Required',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20,
@@ -104,7 +119,7 @@ class ProjectDescription extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(13.0),
             child: Text(
-              skills,
+              level,
               style: TextStyle(
                 color: Colors.black87,
                 fontSize: 18,
@@ -112,6 +127,17 @@ class ProjectDescription extends StatelessWidget {
               ),
             ),
           ),
+          RaisedButton(
+            onPressed: () {
+              Map<String, dynamic> appliedProject = {
+                // 'pid': project.id,
+                // 'ownerId': project.ownerId,
+                'appId': user.userId,
+              };
+              apply.applyForProject(appliedProject);
+            },
+            child: Text("Apply"),
+          )
         ],
       ),
     );
