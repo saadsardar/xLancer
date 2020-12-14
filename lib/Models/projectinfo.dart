@@ -87,6 +87,8 @@ class ProjectsInfo with ChangeNotifier {
           if (user.userId == map['appId']) {
             print('going to JSON');
             _appliedprojectList.add(ProjectInfo.fromJson(map));
+            //pid
+            
             print('Back from JSON');
           }
           // print(_projectList);

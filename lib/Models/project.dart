@@ -49,12 +49,16 @@ class Projects with ChangeNotifier {
 //  String get projectId {
 //     return Project.ownerId;
 //   }
- 
+
   Future<void> deleteProject(String id) async {
     try {
       print('Deleting $id');
       await FirebaseFirestore.instance.collection('project').doc(id).delete();
-      //await FirebaseFirestore.instance.collection('projectinfo').where("pid" ,"==", id).delete();
+      // await FirebaseFirestore.instance
+      //     .collection('projectinfo')
+      //     .where("pid", isEqualTo: id)
+      //     .get()
+      //     .delete();
     } catch (e) {
       print(e);
     }

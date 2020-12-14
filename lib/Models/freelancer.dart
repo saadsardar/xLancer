@@ -60,9 +60,11 @@ class Freelancer extends ChangeNotifier {
   // }
 
   Future<String> setFreelancer(context) async {
+    List<String> rand = [];
+    List<String> rand2 = [];
     String errormsg = '';
     portfolio.remove(true);
-        certifications.remove(true);
+    certifications.remove(true);
 
     // print('User ID Before: $userId');
 
@@ -90,9 +92,10 @@ class Freelancer extends ChangeNotifier {
         (e) {
           var map = e.data();
           //map['id'] = e.id;
-          certifications.add(map['link']);
+          rand.add(map['link']);
         },
       );
+      certifications = rand;
       final dataSnapshot2 = await FirebaseFirestore.instance
           .collection('freelancers/$userId/portfolio/')
           .get();
@@ -101,10 +104,11 @@ class Freelancer extends ChangeNotifier {
         (e) {
           var map2 = e.data();
           //map['id'] = e.id;
-          portfolio.add(map2['link']);
+          rand2.add(map2['link']);
           print(map2['link']);
         },
       );
+      portfolio = rand2;
     } catch (e) {
       print(e);
       if (e != null) errormsg = e.toString();

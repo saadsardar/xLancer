@@ -13,7 +13,7 @@ class EditSkills extends StatefulWidget {
 
 class _EditSkillsState extends State<EditSkills> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  List tags = List();
+  List<String> tags = [];
   bool _isLoading = false;
 
   final GlobalKey<TagsState> _globalKey = GlobalKey<TagsState>();

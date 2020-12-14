@@ -164,8 +164,8 @@ class _MainScreenState extends State<MainScreen> {
                   );
                 } else {
                   final msg = snap.data;
-                  var r = freelancer.portfolio[0];
-                  print('Rate is $r');
+                  // var r = freelancer.portfolio[0];
+                  // print('Rate is $r');
                   // print(freelancer.location);
                   // print(freelancer.summary);
                   // print(freelancer.title);

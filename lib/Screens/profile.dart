@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final userInfo = Provider.of<User>(context, listen: false);
     final userInfo2 = Provider.of<Freelancer>(context, listen: false);
-    buildPortfolio() {}
+    //buildPortfolio() {}
     buildSlider(List<String> images) {
       return Container(
         padding: EdgeInsets.only(left: 20),
@@ -372,49 +372,52 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                // if (userInfo2.portfolio.isEmpty)
+                // if (
+                  userInfo2.portfolio.isEmpty
+                  //)
                 //   {
-                //     Image.asset(
-                //       'assets/portfolio.jpeg',
-                //       height: 150,
-                //       width: 150,
-                //     ),
-                //     Center(
-                //       child: Text(
-                //         "Showcase your work to impress clients",
-                //         style: TextStyle(
-                //           fontSize: 20,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       height: 10,
-                //     ),
-                //     Center(
-                //       child: FlatButton(
-                //         onPressed: () {
-                //           Navigator.of(context)
-                //               .pushNamed(AddPortfolio.routeName)
-                //               .then((value) => setState(() {}));
-                //         },
-                //         child: Text(
-                //           "Add items",
-                //           style: TextStyle(
-                //             color: Colors.green,
-                //             fontSize: 20,
-                //             fontWeight: FontWeight.bold,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   }
+                  ?  Column(children: [
+                    Image.asset(
+                      'assets/portfolio.jpeg',
+                      height: 150,
+                      width: 150,
+                    ),
+                    Center(
+                      child: Text(
+                        "Showcase your work to impress clients",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: FlatButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(AddPortfolio.routeName)
+                              .then((value) => setState(() {}));
+                        },
+                        child: Text(
+                          "Add items",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],)
+              
                 // else
                 //   {
                   //   if(userInfo2.portfolio.isEmpty) 
                   //    Text('data')
-                  //   :
-                  buildSlider(userInfo2.portfolio),
+                  : buildSlider(userInfo2.certifications),
                   // //},
                 SizedBox(
                   height: 10,
