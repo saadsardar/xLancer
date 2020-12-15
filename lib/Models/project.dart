@@ -46,9 +46,32 @@ class Project {
 class Projects with ChangeNotifier {
   List<Project> _projectList = [];
   List<Project> _myprojectList = [];
-//  String get projectId {
-//     return Project.ownerId;
-//   }
+  List<Project> _appliedprojectList = [];
+  Future<List<Project>> getAppliedProjectList(List<String> list) async {
+    _appliedprojectList = [];
+    _appliedprojectList.remove(true);
+    print('Getting projects in which you have applied');
+    for (int i = 0; i < list.length; i++) {
+      try {
+        final dataSnapshot =
+            await FirebaseFirestore.instance.collection('project').get();
+        final data = dataSnapshot.docs;
+        data.forEach(
+          (e) {
+            var map = e.data();
+            map['id'] = e.id;
+            if (map['id'] == list[i]) print('going to JSON');
+            _projectList.add(Project.fromJson(map));
+            print('Back from JSON');
+            // print(_projectList);
+          },
+        );
+      } catch (e) {
+        print(e);
+      }
+    }
+    return [..._appliedprojectList];
+  }
 
   Future<void> deleteProject(String id) async {
     try {

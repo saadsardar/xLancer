@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/project.dart';
+import 'package:xlancer/Models/user.dart';
 import 'package:xlancer/Screens/Projects/project_description.dart';
 
 class ProjectItem extends StatefulWidget {
@@ -39,12 +40,14 @@ class _ProjectItemState extends State<ProjectItem> {
   @override
   Widget build(BuildContext context) {
     final projects = Provider.of<Projects>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
 
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ProjectDescription(
+              widget.id,
               widget.title,
               widget.description,
               widget.price,
@@ -103,6 +106,7 @@ class _ProjectItemState extends State<ProjectItem> {
                 SizedBox(
                   width: 5,
                 ),
+                if(user.userId==widget.ownerId)
                 GestureDetector(
                   onTap: () {
                     print(widget.id);

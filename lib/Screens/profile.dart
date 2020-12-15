@@ -23,6 +23,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final userInfo = Provider.of<User>(context, listen: false);
     final userInfo2 = Provider.of<Freelancer>(context, listen: false);
+    print("userInfo2.portfolio");
+    print(userInfo2.portfolio);
     //buildPortfolio() {}
     buildSlider(List<String> images) {
       return Container(
@@ -31,33 +33,13 @@ class _ProfilePageState extends State<ProfilePage> {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           primary: false,
-          itemCount: images.length == 0
-              ? 0
-              // places == null ? 0 : places.length
-              : images.length,
+          itemCount: images.length == 0 ? 0 : images.length,
           itemBuilder: (BuildContext context, int index) {
-            // Map place = places[index];
-            // if (images.length == 0) {
-            //   place = places[index];
-            // } else {
-            //   // place = images[index];
-            // }
-
             return Padding(
               padding: EdgeInsets.only(right: 10.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child:
-                    //     // images.length == 0
-                    //     //     ?
-                    //     Image.asset(
-                    //   "${place["img"]}",
-                    //   height: 250.0,
-                    //   width: MediaQuery.of(context).size.width - 40.0,
-                    //   fit: BoxFit.cover,
-                    // )
-                    // :
-                    Image.network(
+                child: Image.network(
                   images[index],
                   loadingBuilder: (BuildContext context, Widget child,
                       ImageChunkEvent loadingProgress) {
@@ -373,52 +355,56 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 // if (
-                  userInfo2.portfolio.isEmpty
-                  //)
-                //   {
-                  ?  Column(children: [
-                    Image.asset(
-                      'assets/portfolio.jpeg',
-                      height: 150,
-                      width: 150,
-                    ),
-                    Center(
-                      child: Text(
-                        "Showcase your work to impress clients",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Center(
-                      child: FlatButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(AddPortfolio.routeName)
-                              .then((value) => setState(() {}));
-                        },
-                        child: Text(
-                          "Add items",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],)
-              
-                // else
-                //   {
-                  //   if(userInfo2.portfolio.isEmpty) 
-                  //    Text('data')
-                  : buildSlider(userInfo2.certifications),
-                  // //},
+
+                // userInfo2.portfolio.isEmpty
+                //     //)
+                //     //   {
+                //     ? Column(
+                //         children: [
+                //           Image.asset(
+                //             'assets/portfolio.jpeg',
+                //             height: 150,
+                //             width: 150,
+                //           ),
+                //           Center(
+                //             child: Text(
+                //               "Showcase your work to impress clients",
+                //               style: TextStyle(
+                //                 fontSize: 20,
+                //                 fontWeight: FontWeight.bold,
+                //               ),
+                //             ),
+                //           ),
+                //           SizedBox(
+                //             height: 10,
+                //           ),
+                //           Center(
+                //             child: FlatButton(
+                //               onPressed: () {
+                //                 Navigator.of(context)
+                //                     .pushNamed(AddPortfolio.routeName)
+                //                     .then((value) => setState(() {}));
+                //               },
+                //               child: Text(
+                //                 "Add items",
+                //                 style: TextStyle(
+                //                   color: Colors.green,
+                //                   fontSize: 20,
+                //                   fontWeight: FontWeight.bold,
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ],
+                //       )
+
+                //     // else
+                //     //   {
+                //     //   if(userInfo2.portfolio.isEmpty)
+                //     //    Text('data')
+
+                //     : buildSlider(userInfo2.certifications),
+                // //},
                 SizedBox(
                   height: 10,
                 ),
@@ -545,9 +531,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                userInfo2.certifications != null
-                    ? buildSlider(userInfo2.certifications)
-                    : Text(''),
+                // userInfo2.certifications != null
+                //     ? buildSlider(userInfo2.certifications)
+                //     : Text(''),
                 SizedBox(
                   height: 10,
                 ),

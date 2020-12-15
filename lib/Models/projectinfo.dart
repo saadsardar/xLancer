@@ -24,7 +24,8 @@ class ProjectsInfo with ChangeNotifier {
   //List<ProjectInfo> _myprojectList = [];
   List<ProjectInfo> _appliedprojectList = [];
 
-  Future<void> applyForProject(Map<String, dynamic> appliedProject) async {
+  Future<String> applyForProject(Map<String, dynamic> appliedProject) async {
+    var msg = '';
     try {
       await FirebaseFirestore.instance.collection('projectInfo').add({
         'pid': appliedProject['pid'],
@@ -42,8 +43,10 @@ class ProjectsInfo with ChangeNotifier {
       //return newProject.id;
     } catch (e) {
       print(e);
+      msg = e.toString();
     }
     notifyListeners();
+    return msg;
   }
 
   // Future<List<ProjectInfo>> getMyProjectList(User user) async {
@@ -86,9 +89,9 @@ class ProjectsInfo with ChangeNotifier {
           //map['id'] = e.id;
           if (user.userId == map['appId']) {
             print('going to JSON');
-            _appliedprojectList.add(ProjectInfo.fromJson(map));
+            _appliedprojectList.add(map['pid']);
             //pid
-            
+
             print('Back from JSON');
           }
           // print(_projectList);
@@ -99,11 +102,33 @@ class ProjectsInfo with ChangeNotifier {
     }
     print('done');
     _appliedprojectList.forEach((e) {
-      print('GetCaseList Func: ${e.pid} ${e.ownerId} ${e.appId}');
+      print('GetCaseList Func: ${e.pid}');
     });
 
     //print(_projectList);
     //Projects.getAppliedProjects(_appliedprojectList);
     return [..._appliedprojectList];
+  }
+
+  Future<bool> isApplied(projectid, userid) async {
+    bool applied = false;
+    print('Getting myprojects');
+    try {
+      final dataSnapshot =
+          await FirebaseFirestore.instance.collection('projectInfo').get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          if (userid == map['appId'] && projectid == map['pid']) {
+            applied = true;
+          }
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+    print('User have applied $applied');
+    return applied;
   }
 }

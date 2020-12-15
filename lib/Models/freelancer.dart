@@ -63,8 +63,8 @@ class Freelancer extends ChangeNotifier {
     List<String> rand = [];
     List<String> rand2 = [];
     String errormsg = '';
-    portfolio.remove(true);
-    certifications.remove(true);
+    // portfolio.remove(true);
+    // certifications.remove(true);
 
     // print('User ID Before: $userId');
 
