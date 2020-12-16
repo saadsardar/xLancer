@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:xlancer/Models/user.dart' as UserClass;
 import 'package:xlancer/Screens/splashScreen.dart';
 
-import '../../home.dart';
-import '../main_screen.dart';
+// import '../../home.dart';
+// import '../main_screen.dart';
 
 class RegisterUserDetailScreen extends StatefulWidget {
   static const routeName = '/register-user-screen';

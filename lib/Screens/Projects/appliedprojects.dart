@@ -18,10 +18,11 @@ class _AppliedProjectScreenState extends State<AppliedProjectScreen> {
     final projects = Provider.of<ProjectsInfo>(context, listen: false);
     final plist = Provider.of<Projects>(context, listen: false);
     final user = Provider.of<User>(context, listen: false);
-    Future<List<String>> getProjects() {
-     Future<List<ProjectInfo>>list= projects.getAppliedProjectList(user);
+    Future<List<Project>> getProjects() async {
+      List<ProjectInfo> list = await projects.getAppliedProjectList(user);
+      //print(list);
+      return plist.getAppliedProjectList(list);
       //plist.getAppliedProjects(list);
-      
     }
 
     ;

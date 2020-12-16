@@ -21,16 +21,16 @@ class _EditSkillsState extends State<EditSkills> {
   @override
   Widget build(BuildContext context) {
     List tags = Provider.of<Freelancer>(context, listen: false).skills;
-    void _failSnackbar(String e) {
-      final snackBar = SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            e,
-            textAlign: TextAlign.center,
-            style: TextStyle(),
-          ));
-      _scaffoldKey.currentState.showSnackBar(snackBar);
-    }
+    // void _failSnackbar(String e) {
+    //   final snackBar = SnackBar(
+    //       behavior: SnackBarBehavior.floating,
+    //       content: Text(
+    //         e,
+    //         textAlign: TextAlign.center,
+    //         style: TextStyle(),
+    //       ));
+    //   _scaffoldKey.currentState.showSnackBar(snackBar);
+    // }
 
     void _submit() async {
       setState(() {

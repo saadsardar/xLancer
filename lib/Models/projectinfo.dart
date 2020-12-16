@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
-import 'package:xlancer/Models/project.dart';
 import 'package:xlancer/Models/user.dart';
 
 class ProjectInfo {
@@ -76,7 +74,7 @@ class ProjectsInfo with ChangeNotifier {
   Future<List<ProjectInfo>> getAppliedProjectList(User user) async {
     _appliedprojectList = [];
     _appliedprojectList.remove(true);
-    print('Getting myprojects');
+    print('Inside 1');
     try {
       final dataSnapshot =
           await FirebaseFirestore.instance.collection('projectInfo').get();
@@ -88,8 +86,10 @@ class ProjectsInfo with ChangeNotifier {
           // print(map['id']);
           //map['id'] = e.id;
           if (user.userId == map['appId']) {
-            print('going to JSON');
-            _appliedprojectList.add(map['pid']);
+            print('Giving ID');
+            
+            _appliedprojectList.add(ProjectInfo.fromJson(map));
+            print(map['pid']);
             //pid
 
             print('Back from JSON');

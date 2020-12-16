@@ -50,7 +50,8 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  Future<void> setUserLocal(User user, Freelancer freelancer, Projects project) async {
+  Future<void> setUserLocal(
+      User user, Freelancer freelancer, Projects project) async {
     var msg = '';
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -64,6 +65,8 @@ class _MainScreenState extends State<MainScreen> {
     try {
       await user.setUser();
       await freelancer.setFreelancer(context);
+      //print("freelancer.certifications");
+      //print(freelancer.certifications);
     } catch (e) {
       msg = e.toString();
     }
@@ -74,7 +77,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context, listen: false);
     var freelancer = Provider.of<Freelancer>(context, listen: false);
-    var project=Provider.of<Projects>(context, listen: false);
+    var project = Provider.of<Projects>(context, listen: false);
     Widget tryAgainScreen(String msg) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -212,8 +215,10 @@ class _MainScreenState extends State<MainScreen> {
                 // BottomNavigationBarItem(label: 'Add', icon: Icon(Icons.add)),
                 BottomNavigationBarItem(
                     label: 'Manage', icon: Icon(Icons.work)),
-                    BottomNavigationBarItem(
-                    label: 'Add Project', icon: Icon(Icons.add),),
+                BottomNavigationBarItem(
+                  label: 'Add Project',
+                  icon: Icon(Icons.add),
+                ),
                 BottomNavigationBarItem(
                     label: 'Profile', icon: Icon(Icons.person)),
               ],

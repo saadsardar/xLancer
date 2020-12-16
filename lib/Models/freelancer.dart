@@ -63,6 +63,7 @@ class Freelancer extends ChangeNotifier {
     List<String> rand = [];
     List<String> rand2 = [];
     String errormsg = '';
+    // print('Setting Freelancer');
     // portfolio.remove(true);
     // certifications.remove(true);
 
@@ -79,23 +80,31 @@ class Freelancer extends ChangeNotifier {
       title = userInfo['title'];
       summary = userInfo['summary'];
       //portfolio = userInfo['portfolio'];
-      skills = userInfo['skills'];
+      //skills = [];
+      //userInfo['skills'];
       //comments = userInfo['comments'];
       rate = userInfo['rate'];
+      // print('Setting Freelancer2');
       //certifications = userInfo['certifications'];
 
       final dataSnapshot = await FirebaseFirestore.instance
           .collection('freelancers/$userId/certicates/')
           .get();
+      print(dataSnapshot);
       final data = dataSnapshot.docs;
       data.forEach(
         (e) {
           var map = e.data();
           //map['id'] = e.id;
+
           rand.add(map['link']);
+
+          //print(rand);
         },
       );
+      // print("Getting links");
       certifications = rand;
+      // print("Getting links222");
       final dataSnapshot2 = await FirebaseFirestore.instance
           .collection('freelancers/$userId/portfolio/')
           .get();
@@ -105,10 +114,13 @@ class Freelancer extends ChangeNotifier {
           var map2 = e.data();
           //map['id'] = e.id;
           rand2.add(map2['link']);
-          print(map2['link']);
+          // print("Getting links");
+          //print(map2['link']);
         },
       );
       portfolio = rand2;
+      // print("free");
+      // print(portfolio);
     } catch (e) {
       print(e);
       if (e != null) errormsg = e.toString();
@@ -255,6 +267,50 @@ class Freelancer extends ChangeNotifier {
     }
     notifyListeners();
     return;
+  }
+
+  Future<void>deleltePortfolio(String link) async {
+    try {
+      final dataSnapshot = await FirebaseFirestore.instance
+          .collection('freelancers/$userId/portfolio/')
+          .get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          map['id'] = e.id;
+          if (link == map['link']) {
+            // l.add(map2['link']);
+            FirebaseFirestore.instance
+                .collection('freelancers/$userId/portfolio/')
+                .doc(map['id'])
+                .delete();
+          }
+        },
+      );
+      final dataSnapshot2 = await FirebaseFirestore.instance
+          .collection('freelancers/$userId/certicates/')
+          .get();
+      final data2 = dataSnapshot2.docs;
+      data2.forEach(
+        (e) {
+          var map2 = e.data();
+          map2['id'] = e.id;
+          if (link == map2['link']) {
+            // l.add(map2['link']);
+            FirebaseFirestore.instance
+                .collection('freelancers/$userId/certicates/')
+                .doc(map2['id'])
+                .delete();
+          }
+        },
+      );
+
+      print('Deleting $link');
+    } catch (e) {
+      print(e);
+    }
+    print('Deleting done');
   }
 
   Future<void> addportfolio(Map<String, dynamic> userInfo) async {

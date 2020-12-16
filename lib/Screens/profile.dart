@@ -24,12 +24,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final userInfo = Provider.of<User>(context, listen: false);
     final userInfo2 = Provider.of<Freelancer>(context, listen: false);
     print("userInfo2.portfolio");
-    print(userInfo2.portfolio);
+    print(userInfo2.certifications);
     //buildPortfolio() {}
     buildSlider(List<String> images) {
       return Container(
         padding: EdgeInsets.only(left: 20),
-        height: 250.0,
+        height: 200.0,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           primary: false,
@@ -37,29 +37,44 @@ class _ProfilePageState extends State<ProfilePage> {
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: EdgeInsets.only(right: 10.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.network(
-                  images[index],
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.network(
+                      images[index],
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes
+                                  : null,
+                            ),
+                          ),
+                        );
+                      },
+                      height: 250.0,
                       width: MediaQuery.of(context).size.width * 0.8,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes
-                              : null,
-                        ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 5,
+                    right: 10,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red,
                       ),
-                    );
-                  },
-                  height: 250.0,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  fit: BoxFit.cover,
-                ),
+                      onPressed: userInfo2.deleltePortfolio(images[index]),
+                    ),
+                  ),
+                ],
               ),
             );
           },
@@ -356,55 +371,55 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 // if (
 
-                // userInfo2.portfolio.isEmpty
-                //     //)
-                //     //   {
-                //     ? Column(
-                //         children: [
-                //           Image.asset(
-                //             'assets/portfolio.jpeg',
-                //             height: 150,
-                //             width: 150,
-                //           ),
-                //           Center(
-                //             child: Text(
-                //               "Showcase your work to impress clients",
-                //               style: TextStyle(
-                //                 fontSize: 20,
-                //                 fontWeight: FontWeight.bold,
-                //               ),
-                //             ),
-                //           ),
-                //           SizedBox(
-                //             height: 10,
-                //           ),
-                //           Center(
-                //             child: FlatButton(
-                //               onPressed: () {
-                //                 Navigator.of(context)
-                //                     .pushNamed(AddPortfolio.routeName)
-                //                     .then((value) => setState(() {}));
-                //               },
-                //               child: Text(
-                //                 "Add items",
-                //                 style: TextStyle(
-                //                   color: Colors.green,
-                //                   fontSize: 20,
-                //                   fontWeight: FontWeight.bold,
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       )
+                userInfo2.portfolio == null || userInfo2.portfolio.isEmpty
+                    //)
+                    //   {
+                    ? Column(
+                        children: [
+                          Image.asset(
+                            'assets/portfolio.jpeg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          Center(
+                            child: Text(
+                              "Showcase your work to impress clients",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Center(
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(AddPortfolio.routeName)
+                                    .then((value) => setState(() {}));
+                              },
+                              child: Text(
+                                "Add items",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
 
-                //     // else
-                //     //   {
-                //     //   if(userInfo2.portfolio.isEmpty)
-                //     //    Text('data')
+                    // else
+                    //   {
+                    //   if(userInfo2.portfolio.isEmpty)
+                    //    Text('data')
 
-                //     : buildSlider(userInfo2.certifications),
-                // //},
+                    : buildSlider(userInfo2.portfolio),
+                //},
                 SizedBox(
                   height: 10,
                 ),
@@ -531,9 +546,55 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                // userInfo2.certifications != null
-                //     ? buildSlider(userInfo2.certifications)
-                //     : Text(''),
+                userInfo2.certifications == null
+                    //)
+                    //   {
+                    ? Column(
+                        children: [
+                          Image.asset(
+                            'assets/portfolio.jpeg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          Center(
+                            child: Text(
+                              "Showcase your Certificates to impress clients",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Center(
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(AddPortfolio.routeName)
+                                    .then((value) => setState(() {}));
+                              },
+                              child: Text(
+                                "Add items",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+
+                    // else
+                    //   {
+                    //   if(userInfo2.portfolio.isEmpty)
+                    //    Text('data')
+
+                    : buildSlider(userInfo2.certifications),
+                //},
                 SizedBox(
                   height: 10,
                 ),

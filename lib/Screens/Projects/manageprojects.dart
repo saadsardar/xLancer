@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:xlancer/Screens/Search/search_screen.dart';
-import 'package:xlancer/Screens/saved_screen.dart';
+// import 'package:xlancer/Screens/Search/search_screen.dart';
+// import 'package:xlancer/Screens/saved_screen.dart';
 
 import '../drawer.dart';
 
+import 'appliedprojects.dart';
 import 'myprojects.dart';
 
 
@@ -48,7 +49,7 @@ class _ManageProjectScreenState extends State<ManageProjectScreen> {
         body: TabBarView(
           children: <Widget>[
             MyProjectScreen(),
-            SearchScreen(),
+            AppliedProjectScreen(),
             //SavedScreen(),
           ],
         ),

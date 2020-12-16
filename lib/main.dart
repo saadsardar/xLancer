@@ -22,7 +22,7 @@ import 'Screens/main_screen.dart';
 import 'Screens/SignUp/registerGoogle.dart';
 import 'Screens/SignUp/registerdetail.dart';
 import 'Screens/splashScreen.dart';
-import 'home.dart';
+// import 'home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:xlancer/Models/projectinfo.dart';
@@ -46,31 +48,38 @@ class Project {
 class Projects with ChangeNotifier {
   List<Project> _projectList = [];
   List<Project> _myprojectList = [];
-  List<Project> _appliedprojectList = [];
-  Future<List<Project>> getAppliedProjectList(List<String> list) async {
-    _appliedprojectList = [];
-    _appliedprojectList.remove(true);
-    print('Getting projects in which you have applied');
-    for (int i = 0; i < list.length; i++) {
-      try {
-        final dataSnapshot =
-            await FirebaseFirestore.instance.collection('project').get();
-        final data = dataSnapshot.docs;
-        data.forEach(
-          (e) {
-            var map = e.data();
-            map['id'] = e.id;
-            if (map['id'] == list[i]) print('going to JSON');
+  List<Project> _appliedprojectList2 = [];
+  Future<List<Project>> getAppliedProjectList(List<ProjectInfo> list) async {
+    _appliedprojectList2 = [];
+    _appliedprojectList2.remove(true);
+    //print('Getting projects in which you have applied');
+    //for (int i = 0; i < list.length; i++) {
+    try {
+      final dataSnapshot =
+          await FirebaseFirestore.instance.collection('project').get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          map['id'] = e.id;
+          //print(list[pid]);
+          list.forEach((list) {
+            //print('Inside listsss Func: ${list.pid}');
+          });
+          if (list.contains(map['id'])) {
+            // print("Coming here");
+            // print(map['id']);
             _projectList.add(Project.fromJson(map));
-            print('Back from JSON');
-            // print(_projectList);
-          },
-        );
-      } catch (e) {
-        print(e);
-      }
+            //print('Back from JSON');
+          }
+          // print(_projectList);
+        },
+      );
+    } catch (e) {
+      print(e);
+      // }
     }
-    return [..._appliedprojectList];
+    return [..._projectList];
   }
 
   Future<void> deleteProject(String id) async {
@@ -91,7 +100,7 @@ class Projects with ChangeNotifier {
   Future<List<Project>> getMyProjectList(User user) async {
     _myprojectList = [];
     _myprojectList.remove(true);
-    print('Getting myprojects');
+    //print('Getting myprojects');
     try {
       final dataSnapshot =
           await FirebaseFirestore.instance.collection('project').get();
@@ -101,9 +110,9 @@ class Projects with ChangeNotifier {
           var map = e.data();
           map['id'] = e.id;
           if (user.userId == map['ownerId']) {
-            print('going to JSON');
+            //print('going to JSON');
             _myprojectList.add(Project.fromJson(map));
-            print('Back from JSON');
+            //print('Back from JSON');
           }
         },
       );
@@ -145,7 +154,7 @@ class Projects with ChangeNotifier {
   Future<List<Project>> get getProjectList async {
     _projectList = [];
     _projectList.remove(true);
-    print('Getting projects');
+    //print('Getting projects');
     try {
       final dataSnapshot =
           await FirebaseFirestore.instance.collection('project').get();
@@ -156,19 +165,19 @@ class Projects with ChangeNotifier {
           //print('map');
           print(map['level']);
           map['id'] = e.id;
-          print('going to JSON');
+          //print('going to JSON');
           _projectList.add(Project.fromJson(map));
-          print('Back from JSON');
+          //print('Back from JSON');
           // print(_projectList);
         },
       );
     } catch (e) {
       print(e);
     }
-    print('done');
-    _projectList.forEach((e) {
-      print('GetCaseList Func: ${e.id} ${e.price}');
-    });
+   // print('done');
+    // _projectList.forEach((e) {
+    //   print('GetCaseList Func: ${e.id} ${e.price}');
+    // });
 
     //print(_projectList);
     return [..._projectList];
