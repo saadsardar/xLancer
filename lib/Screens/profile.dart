@@ -24,8 +24,59 @@ class _ProfilePageState extends State<ProfilePage> {
     final userInfo = Provider.of<User>(context, listen: false);
     final userInfo2 = Provider.of<Freelancer>(context, listen: false);
     print("userInfo2.portfolio");
-    print(userInfo2.certifications);
+    print(userInfo2.skills);
     //buildPortfolio() {}
+    buildSkills(List<String> tags) {
+      return Container(
+        padding: EdgeInsets.only(left: 20),
+        height: 200.0,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            primary: false,
+            itemCount: tags.length == 0 ? 0 : tags.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(color: Colors.green, spreadRadius: 1),
+                          ],
+                        ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(Icons.work),
+                    Container(
+                        // decoration: BoxDecoration(
+                        //   borderRadius: BorderRadius.circular(10),
+                        //   color: Colors.white,
+                        //   boxShadow: [
+                        //     BoxShadow(color: Colors.green, spreadRadius: 3),
+                        //   ],
+                        // ),
+                        child: Text(tags[index], style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,),
+                         ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                          await userInfo2.delelteSkill(tags[index]);
+                          setState(() {});
+                        },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+      );
+    }
+
     buildSlider(List<String> images) {
       return Container(
         padding: EdgeInsets.only(left: 20),
@@ -67,12 +118,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     top: 5,
                     right: 10,
                     child: IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                      onPressed: userInfo2.deleltePortfolio(images[index]),
-                    ),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () async {
+                          await userInfo2.deleltePortfolio(images[index]);
+                          setState(() {});
+                        }),
                   ),
                 ],
               ),
@@ -468,7 +521,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         backgroundColor: Colors.white,
                         child: IconButton(
                           color: Theme.of(context).accentColor,
-                          icon: Icon(Icons.edit),
+                          icon: Icon(Icons.add),
                           onPressed: () {
                             //     Navigator.of(context)
                             // .pushNamed(EditSkills.routeName)
@@ -485,9 +538,51 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 10,
                 ),
-                //list here which shows skills tags
+                userInfo2.skills == null || userInfo2.skills.isEmpty
+                    ? Column(
+                        children: [
+                          Image.asset(
+                            'assets/portfolio.jpeg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          Center(
+                            child: Text(
+                              "Showcase your work to impress clients",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Center(
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(AddPortfolio.routeName)
+                                    .then((value) => setState(() {}));
+                              },
+                              child: Text(
+                                "Add items",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : //Text("data"),
+                    buildSkills(userInfo2.skills),
               ],
             ),
+
+            //list here which shows skills tags
           ),
           Container(
             color: Colors.grey[200],
@@ -546,7 +641,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                userInfo2.certifications == null
+                userInfo2.certifications == null ||
+                        userInfo2.certifications.isEmpty
                     //)
                     //   {
                     ? Column(

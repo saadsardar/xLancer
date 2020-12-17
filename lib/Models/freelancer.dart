@@ -62,6 +62,7 @@ class Freelancer extends ChangeNotifier {
   Future<String> setFreelancer(context) async {
     List<String> rand = [];
     List<String> rand2 = [];
+    List<String> rand0 = [];
     String errormsg = '';
     // print('Setting Freelancer');
     // portfolio.remove(true);
@@ -80,17 +81,33 @@ class Freelancer extends ChangeNotifier {
       title = userInfo['title'];
       summary = userInfo['summary'];
       //portfolio = userInfo['portfolio'];
-      //skills = [];
+      //skills = ['skills'].toList();
       //userInfo['skills'];
       //comments = userInfo['comments'];
       rate = userInfo['rate'];
-      // print('Setting Freelancer2');
-      //certifications = userInfo['certifications'];
 
+final dataSnapshot0 = await FirebaseFirestore.instance
+          .collection('freelancers/$userId/skills/')
+          .get();
+      //print('Fetech $skills');
+      final data0 = dataSnapshot0.docs;
+      data0.forEach(
+        (e) {
+          var map0 = e.data();
+          //map['id'] = e.id;
+
+          rand0.add(map0['skills']);
+
+          print("rand");
+          print(map0['skills']);
+        },
+      );
+      print("Getting links");
+     skills = rand0;
       final dataSnapshot = await FirebaseFirestore.instance
           .collection('freelancers/$userId/certicates/')
           .get();
-      print(dataSnapshot);
+      //print('Fetech $skills');
       final data = dataSnapshot.docs;
       data.forEach(
         (e) {
@@ -200,23 +217,23 @@ class Freelancer extends ChangeNotifier {
     return;
   }
 
-  Future<void> editskills(Map<String, dynamic> userInfo) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('freelancers')
-          .doc(userId)
-          .update(
-        {
-          'skills': userInfo['tags'],
-        },
-      );
-      skills = userInfo['tags'];
-    } catch (e) {
-      print(e);
-    }
-    notifyListeners();
-    return;
-  }
+  // Future<void> editskills(Map<String, dynamic> userInfo) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('freelancers')
+  //         .doc(userId)
+  //         .update(
+  //       {
+  //         'skills': userInfo['tags'],
+  //       },
+  //     );
+  //     skills = userInfo['tags'];
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   notifyListeners();
+  //   return;
+  // }
 
   // Future<void> editportfolio(Map<String, dynamic> userInfo) async {
   //   try {
@@ -268,8 +285,49 @@ class Freelancer extends ChangeNotifier {
     notifyListeners();
     return;
   }
+    Future<void> addSkills(Map<String, dynamic> userInfo) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('freelancers/$userId/skills/')
+          .add(
+        {
+          'skills': userInfo['tag'],
+        },
+      );
+      skills.add(userInfo['skills']);
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+    return;
+  }
+  Future<void> delelteSkill(String link) async {
+    try {
+      final dataSnapshot = await FirebaseFirestore.instance
+          .collection('freelancers/$userId/skills/')
+          .get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          map['id'] = e.id;
+          if (link == map['skills']) {
+            // l.add(map2['link']);
+            FirebaseFirestore.instance
+                .collection('freelancers/$userId/skills/')
+                .doc(map['id'])
+                .delete();
+          }
+        },
+      );
+      print('Deleting $link');
+    } catch (e) {
+      print(e);
+    }
+    print('Deleting skill done');
+  }
 
-  Future<void>deleltePortfolio(String link) async {
+  Future<void> deleltePortfolio(String link) async {
     try {
       final dataSnapshot = await FirebaseFirestore.instance
           .collection('freelancers/$userId/portfolio/')

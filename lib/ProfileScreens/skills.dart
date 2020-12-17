@@ -13,14 +13,22 @@ class EditSkills extends StatefulWidget {
 
 class _EditSkillsState extends State<EditSkills> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<String> tags = [];
+  //List<String> tags = [];
+  String tag = '';
   bool _isLoading = false;
+  final myController = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
 
   final GlobalKey<TagsState> _globalKey = GlobalKey<TagsState>();
 
   @override
   Widget build(BuildContext context) {
-    List tags = Provider.of<Freelancer>(context, listen: false).skills;
+    //List tags = Provider.of<Freelancer>(context, listen: false).skills;
     // void _failSnackbar(String e) {
     //   final snackBar = SnackBar(
     //       behavior: SnackBarBehavior.floating,
@@ -36,13 +44,13 @@ class _EditSkillsState extends State<EditSkills> {
       setState(() {
         _isLoading = true;
       });
+      tag=(myController.text).toString();
       // if (tags.isEmpty) {
-      print('$tags ');
+      //print('$tags ');
       Map<String, dynamic> userInfo = {
-        'tags': tags,
+        'tag': tag,
       };
-      await Provider.of<Freelancer>(context, listen: false)
-          .editskills(userInfo);
+      await Provider.of<Freelancer>(context, listen: false).addSkills(userInfo);
       //    }
       // else {
       //   print('Invalid Entry');
@@ -54,39 +62,56 @@ class _EditSkillsState extends State<EditSkills> {
       Navigator.pop(context);
     }
 
-    Widget _formActionButton() {
+    Widget _nameTextfield() {
       return Padding(
         padding: EdgeInsets.only(top: 20),
-        child: _isLoading
-            ? CircularProgressIndicator()
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    height: 50,
-                    child: RaisedButton(
-                      onPressed: _submit,
-                      child: Text(
-                        'Submit',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            .copyWith(color: Colors.white),
-                      ),
-                      elevation: 2.0,
-                      color: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+        child: TextField(
+          controller: myController,
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Add your skill',
+            hintText: 'What do you do?',
+            icon: Icon(Icons.work),
+          ),
+        ),
       );
     }
+
+    // Widget _formActionButton() {
+    //   return Padding(
+    //     padding: EdgeInsets.only(top: 20),
+    //     child: _isLoading
+    //         ? CircularProgressIndicator()
+    //         : Column(
+    //             crossAxisAlignment: CrossAxisAlignment.center,
+    //             children: [
+    //               SizedBox(
+    //                 width: MediaQuery.of(context).size.width * 0.4,
+    //                 height: 50,
+    //                 child: RaisedButton(
+    //                   onPressed: _submit,
+    //                   child: Text(
+    //                     'Submit',
+    //                     style: Theme.of(context)
+    //                         .textTheme
+    //                         .bodyText1
+    //                         .copyWith(color: Colors.white),
+    //                   ),
+    //                   elevation: 2.0,
+    //                   color: Theme.of(context).primaryColor,
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.all(
+    //                       Radius.circular(10.0),
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //   );
+    // }
 
     return Scaffold(
       key: _scaffoldKey,
@@ -96,47 +121,40 @@ class _EditSkillsState extends State<EditSkills> {
       ),
       body: Column(
         children: [
-          Container(
-            alignment: AlignmentDirectional.center,
-            child: Tags(
-              alignment: WrapAlignment.center,
-              runAlignment: WrapAlignment.start,
-              key: _globalKey,
-              itemCount: tags.length,
-              columns: 4,
-              textField: TagsTextField(
-                  textStyle: TextStyle(fontSize: 20),
-                  onSubmitted: (string) {
-                    setState(
-                      () {
-                        tags.add(
-                          Item(
-                            title: string,
+          _nameTextfield(),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: _isLoading
+                ? CircularProgressIndicator()
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        height: 50,
+                        child: RaisedButton(
+                          onPressed: _submit,
+                          child: Text(
+                            'Add Skill',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(color: Colors.white),
                           ),
-                        );
-                      },
-                    );
-                  }),
-              itemBuilder: (i) {
-                final Item currentItem = tags[i];
-                return ItemTags(
-                  textStyle: TextStyle(fontSize: 18),
-                  index: i,
-                  title: currentItem.title,
-                  customData: currentItem.customData,
-                  combine: ItemTagsCombine.withTextBefore,
-                  onPressed: (ind) => print(ind),
-                  removeButton: ItemTagsRemoveButton(onRemoved: () {
-                    setState(() {
-                      tags.removeAt(i);
-                    });
-                    return true;
-                  }),
-                );
-              },
-            ),
+                          elevation: 2.0,
+                          color: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
           ),
-          _formActionButton(),
+
+          //_formActionButton(),
         ],
       ),
     );
