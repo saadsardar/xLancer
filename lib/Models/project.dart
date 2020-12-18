@@ -48,11 +48,13 @@ class Project {
 class Projects with ChangeNotifier {
   List<Project> _projectList = [];
   List<Project> _myprojectList = [];
-  List<Project> _appliedprojectList2 = [];
-  Future<List<Project>> getAppliedProjectList(List<ProjectInfo> list) async {
-    _appliedprojectList2 = [];
-    _appliedprojectList2.remove(true);
-    //print('Getting projects in which you have applied');
+  //List<Project> _appliedprojectList2 = [];
+  Future<List<Project>> getAppliedProjectList(List<String> list) async {
+    // _appliedprojectList2 = [];
+    // _appliedprojectList2.remove(true);
+    _projectList = [];
+    _projectList.remove(true);
+    // print('Getting projects in which you have applied');
     //for (int i = 0; i < list.length; i++) {
     try {
       final dataSnapshot =
@@ -62,17 +64,13 @@ class Projects with ChangeNotifier {
         (e) {
           var map = e.data();
           map['id'] = e.id;
-          //print(list[pid]);
-          list.forEach((list) {
-            //print('Inside listsss Func: ${list.pid}');
-          });
-          if (list.contains(map['id'])) {
-            // print("Coming here");
-            // print(map['id']);
-            _projectList.add(Project.fromJson(map));
-            //print('Back from JSON');
-          }
-          // print(_projectList);
+          print(map['id']);
+            print("Coming here3");
+            if (list.contains(map['id'])) {
+              print("Coming here");
+              print(map['id']);
+              _projectList.add(Project.fromJson(map));
+            }
         },
       );
     } catch (e) {
@@ -174,7 +172,7 @@ class Projects with ChangeNotifier {
     } catch (e) {
       print(e);
     }
-   // print('done');
+    // print('done');
     // _projectList.forEach((e) {
     //   print('GetCaseList Func: ${e.id} ${e.price}');
     // });

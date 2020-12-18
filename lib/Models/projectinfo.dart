@@ -20,7 +20,7 @@ class ProjectInfo {
 
 class ProjectsInfo with ChangeNotifier {
   //List<ProjectInfo> _myprojectList = [];
-  List<ProjectInfo> _appliedprojectList = [];
+  List<String> _appliedprojectList = [];
 
   Future<String> applyForProject(Map<String, dynamic> appliedProject) async {
     var msg = '';
@@ -71,7 +71,7 @@ class ProjectsInfo with ChangeNotifier {
   //   //print(_projectList);
   //   return [..._myprojectList];
   // }
-  Future<List<ProjectInfo>> getAppliedProjectList(User user) async {
+  Future<List<String>> getAppliedProjectList(User user) async {
     _appliedprojectList = [];
     _appliedprojectList.remove(true);
     print('Inside 1');
@@ -88,11 +88,12 @@ class ProjectsInfo with ChangeNotifier {
           if (user.userId == map['appId']) {
             print('Giving ID');
             
-            _appliedprojectList.add(ProjectInfo.fromJson(map));
+            _appliedprojectList.add(map['pid']);
+            print("ProjectId from info");
             print(map['pid']);
             //pid
 
-            print('Back from JSON');
+            print('Back from JSON22');
           }
           // print(_projectList);
         },
@@ -101,9 +102,9 @@ class ProjectsInfo with ChangeNotifier {
       print(e);
     }
     print('done');
-    _appliedprojectList.forEach((e) {
-      print('GetCaseList Func: ${e.pid}');
-    });
+    // _appliedprojectList.forEach((e) {
+    //   print('GetCaseList Func: ${e.pid}');
+    // });
 
     //print(_projectList);
     //Projects.getAppliedProjects(_appliedprojectList);

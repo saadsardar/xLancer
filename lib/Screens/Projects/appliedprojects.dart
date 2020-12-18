@@ -19,9 +19,10 @@ class _AppliedProjectScreenState extends State<AppliedProjectScreen> {
     final plist = Provider.of<Projects>(context, listen: false);
     final user = Provider.of<User>(context, listen: false);
     Future<List<Project>> getProjects() async {
-      List<ProjectInfo> list = await projects.getAppliedProjectList(user);
+      List<String> list = await projects.getAppliedProjectList(user);
       //print(list);
-      return plist.getAppliedProjectList(list);
+      List<Project> list2 = await plist.getAppliedProjectList(list);
+      return list2;
       //plist.getAppliedProjects(list);
     }
 
@@ -36,26 +37,33 @@ class _AppliedProjectScreenState extends State<AppliedProjectScreen> {
             return Text(snap.error);
           } else {
             final loadedProjects = snap.data as List<Project>;
-            print('super');
-            print(loadedProjects[0].id);
-            return Scaffold(
-              body: ListView.builder(
-                itemBuilder: (ctx, i) => ProjectItem(
-                  loadedProjects[i].id,
-                  loadedProjects[i].title,
-                  loadedProjects[i].description,
-                  loadedProjects[i].price,
-                  loadedProjects[i].isSaved,
-                  loadedProjects[i].level,
-                  loadedProjects[i].deadline,
-                  loadedProjects[i].ownerId,
-                  loadedProjects[i].date,
-                  //loadedProjects[i].skills,
+            // print('super');
+            // print(loadedProjects[0].id);
+            if (loadedProjects.isEmpty) {
+              return Scaffold(
+                  body: Center(
+                child: Text('You have not applied to any Projects'),
+              ));
+            } else {
+              return Scaffold(
+                body: ListView.builder(
+                  itemBuilder: (ctx, i) => ProjectItem(
+                    loadedProjects[i].id,
+                    loadedProjects[i].title,
+                    loadedProjects[i].description,
+                    loadedProjects[i].price,
+                    loadedProjects[i].isSaved,
+                    loadedProjects[i].level,
+                    loadedProjects[i].deadline,
+                    loadedProjects[i].ownerId,
+                    loadedProjects[i].date,
+                    //loadedProjects[i].skills,
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  itemCount: loadedProjects.length,
                 ),
-                padding: const EdgeInsets.all(10),
-                itemCount: loadedProjects.length,
-              ),
-            );
+              );
+            }
           }
         }
       },
