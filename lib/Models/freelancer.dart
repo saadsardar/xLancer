@@ -5,6 +5,8 @@ import 'package:xlancer/Models/user.dart';
 
 class Freelancer extends ChangeNotifier {
   String userId;
+  String name;
+  String picture;
   String location;
   String title;
   String rate;
@@ -16,6 +18,8 @@ class Freelancer extends ChangeNotifier {
   String ratings;
   Freelancer({
     this.userId,
+    this.name,
+    this.picture,
     this.location,
     this.title,
     this.rate,
@@ -26,40 +30,20 @@ class Freelancer extends ChangeNotifier {
     this.ratings,
     this.certifications,
   });
-  //   Future<List<Freelancer>> getCertificates() async {
-  //   certifications = [];
-  //   final result = await FirebaseFirestore.instance
-  //       .collection('freelancers/$userId/certificates')
-  //       .get();
-  //   final certificateSnapshot = result.docs;
-
-  //   certificateSnapshot.forEach(
-  //     (e) {
-  //       var map = e.data();
-  //       map['id'] = e.id;
-  //       certifications.add(PaymentClass.fromJson(map));
-  //     },
-  //   );
-  //   return certifications;
-  // }
-  // Future<List<Freelancer>> getPortfolio() async {
-  //   portfolio = [];
-  //   final result = await FirebaseFirestore.instance
-  //       .collection('freelancers/$userId/portfolio')
-  //       .get();
-  //   final portfolioSnapshot = result.docs;
-
-  //   portfolioSnapshot.forEach(
-  //     (e) {
-  //       var map = e.data();
-  //       map['id'] = e.id;
-  //       portfolio.add(PaymentClass.fromJson(map));
-  //     },
-  //   );
-  //   return portfolio;
-  // }
-
-  Future<String> setFreelancer(context) async {
+  Freelancer.fromJson(Map<String, dynamic> json)
+      : this.userId = json['id'],
+        this.name = json['name'],
+        this.picture = json['picture'],
+        this.location = json['location'],
+        this.title = json['title'],
+        this.rate = json['rate'],
+        this.summary = json['summary'],
+        this.portfolio = json['portfolio'],
+        this.skills = json['skills'],
+        this.ratings = json['summary'],
+        this.certifications = json['portfolio'];
+  List<Freelancer> rand0 = [];
+  Future<String> setFreelancer(User user) async {
     List<String> rand = [];
     List<String> rand2 = [];
     List<String> rand0 = [];
@@ -70,13 +54,15 @@ class Freelancer extends ChangeNotifier {
 
     // print('User ID Before: $userId');
 
-    userId = Provider.of<User>(context, listen: false).userId;
+    //userId = Provider.of<User>(context, listen: false).userId;
     try {
       final userSnap = await FirebaseFirestore.instance
           .collection('freelancers')
-          .doc(userId)
+          .doc(user.userId)
           .get();
       final userInfo = userSnap.data();
+      name = userInfo['name'];
+      picture = userInfo['picture'];
       location = userInfo['location'];
       title = userInfo['title'];
       summary = userInfo['summary'];
@@ -86,7 +72,7 @@ class Freelancer extends ChangeNotifier {
       //comments = userInfo['comments'];
       rate = userInfo['rate'];
 
-final dataSnapshot0 = await FirebaseFirestore.instance
+      final dataSnapshot0 = await FirebaseFirestore.instance
           .collection('freelancers/$userId/skills/')
           .get();
       //print('Fetech $skills');
@@ -103,7 +89,7 @@ final dataSnapshot0 = await FirebaseFirestore.instance
         },
       );
       print("Getting links");
-     skills = rand0;
+      skills = rand0;
       final dataSnapshot = await FirebaseFirestore.instance
           .collection('freelancers/$userId/certicates/')
           .get();
@@ -285,7 +271,8 @@ final dataSnapshot0 = await FirebaseFirestore.instance
     notifyListeners();
     return;
   }
-    Future<void> addSkills(Map<String, dynamic> userInfo) async {
+
+  Future<void> addSkills(Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
           .collection('freelancers/$userId/skills/')
@@ -301,6 +288,7 @@ final dataSnapshot0 = await FirebaseFirestore.instance
     notifyListeners();
     return;
   }
+
   Future<void> delelteSkill(String link) async {
     try {
       final dataSnapshot = await FirebaseFirestore.instance
@@ -386,5 +374,32 @@ final dataSnapshot0 = await FirebaseFirestore.instance
     }
     notifyListeners();
     return;
+  }
+
+  Future<List<Freelancer>> getRequestedUsers(List<String> userslist) async {
+    String errormsg = '';
+
+    rand0 = [];
+    rand0.remove(true);
+
+    //List<String> rand1 = [];
+    try {
+      final dataSnapshot =
+          await FirebaseFirestore.instance.collection('freelancers').get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          map['id'] = e.id;
+          if (userslist.contains(map['id'])) {
+            rand0.add(Freelancer.fromJson(map));
+          }
+        },
+      );
+    } catch (e) {
+      print(e);
+      if (e != null) errormsg = e.toString();
+    }
+    return rand0;
   }
 }

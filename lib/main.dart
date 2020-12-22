@@ -13,6 +13,8 @@ import 'package:xlancer/ProfileScreens/portfolio.dart';
 import 'package:xlancer/ProfileScreens/rate.dart';
 import 'package:xlancer/ProfileScreens/summary.dart';
 import 'package:xlancer/ProfileScreens/title.dart';
+import 'package:xlancer/Screens/Projects/profileItem.dart';
+import 'package:xlancer/Screens/Projects/viewProfile.dart';
 import 'Models/user.dart';
 import 'ProfileScreens/skills.dart';
 import 'Screens/Projects/uploadProject.dart';
@@ -74,6 +76,8 @@ class MyApp extends StatelessWidget {
           EditSkills.routeName: (ctx) => EditSkills(),
           NewProjectScreen.routeName: (ctx) => NewProjectScreen(),
           SearchResultScreen.routeName: (ctx) => SearchResultScreen(),
+          //ViewProfilePage.routeName: (ctx)=> ViewProfilePage(),
+         ProfileItem.routeName:(ctx)=>ProfileItem(),
           //PostJob.routeName:(ctx) => PostJob(),
           //EditSkills.routeName: (ctx) => EditSkills(),
         },

@@ -65,12 +65,12 @@ class Projects with ChangeNotifier {
           var map = e.data();
           map['id'] = e.id;
           print(map['id']);
-            print("Coming here3");
-            if (list.contains(map['id'])) {
-              print("Coming here");
-              print(map['id']);
-              _projectList.add(Project.fromJson(map));
-            }
+          print("Coming here3");
+          if (list.contains(map['id'])) {
+            print("Coming here");
+            print(map['id']);
+            _projectList.add(Project.fromJson(map));
+          }
         },
       );
     } catch (e) {
@@ -84,6 +84,22 @@ class Projects with ChangeNotifier {
     try {
       print('Deleting $id');
       await FirebaseFirestore.instance.collection('project').doc(id).delete();
+      final dataSnapshot =
+          await FirebaseFirestore.instance.collection('projectInfo').get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          map['id'] = e.id;
+          if (id == map['pid']) {
+            // l.add(map2['link']);
+            FirebaseFirestore.instance
+                .collection('projectInfo')
+                .doc(map['id'])
+                .delete();
+          }
+        },
+      );
       // await FirebaseFirestore.instance
       //     .collection('projectinfo')
       //     .where("pid", isEqualTo: id)
@@ -94,6 +110,23 @@ class Projects with ChangeNotifier {
     }
     print('Deleting done');
   }
+  // Future<void> savedProject(bool saved, String pid) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('project')
+  //         .doc(pid)
+  //         .update(
+  //       {
+  //         'isSaved': saved,
+  //       },
+  //     );
+  //     // isSaved = userInfo['summary'];
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   notifyListeners();
+  //   return;
+  // }
 
   Future<List<Project>> getMyProjectList(User user) async {
     _myprojectList = [];

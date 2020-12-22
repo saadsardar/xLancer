@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/projectinfo.dart';
 import 'package:xlancer/Models/user.dart';
+import 'package:xlancer/Screens/Projects/profileItem.dart';
+import 'package:xlancer/Screens/Projects/viewProfile.dart';
 import 'package:xlancer/Widgets/SuccessMessageDialog.dart';
 
 class ProjectDescription extends StatelessWidget {
@@ -171,6 +173,20 @@ class ProjectDescription extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          // Padding(
+          //     padding: EdgeInsets.only(right: 20.0),
+          //     child: GestureDetector(
+          //       onTap: () {
+          //         final RenderBox box = context.findRenderObject();
+          //         Share.share("text",
+          //             subject: "subject",
+          //             sharePositionOrigin:
+          //                 box.localToGlobal(Offset.zero) & box.size);
+          //       },
+          //       child: Icon(Icons.share),
+          //     )),
+        ],
         title: Text(title),
       ),
       // FutureBuilder(
@@ -332,6 +348,46 @@ class ProjectDescription extends StatelessWidget {
                       ),
                       onPressed: () {
                         snap.data == false ? _showMyDialog() : null;
+                      },
+                    ),
+                  ),
+                if (user.userId == ownerId)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: RawMaterialButton(
+                      shape: new RoundedRectangleBorder(),
+                      elevation: 0.0,
+                      child: Container(
+                        width: 200,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Theme.of(context).accentColor,
+                        ),
+                        child: Center(
+                          child: Text(
+                            "View Requests",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(ProfileItem.routeName,
+                            arguments: ProjectDescription(
+                              id,
+                              title,
+                              description,
+                              price,
+                              isSaved,
+                              level,
+                              deadline,
+                              ownerId,
+                              date,
+                            ));
+                        // ProfileItem(id);
                       },
                     ),
                   ),

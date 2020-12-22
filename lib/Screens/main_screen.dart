@@ -64,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
     }
     try {
       await user.setUser();
-      await freelancer.setFreelancer(context);
+      await freelancer.setFreelancer(user);
       //print("freelancer.certifications");
       //print(freelancer.certifications);
     } catch (e) {

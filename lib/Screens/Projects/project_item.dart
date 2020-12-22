@@ -90,36 +90,44 @@ class _ProjectItemState extends State<ProjectItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // GestureDetector(
-                //   onTap: () {
-                //     print('dislike');
-                //     func();
-                //   },
-                //   child: CircleAvatar(
-                //     backgroundColor: Colors.lightGreen,
-                //     child: Icon(
-                //       Icons.thumb_down,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
+                if (!(user.userId == widget.ownerId))
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       widget.isSaved = !widget.isSaved;
+                  //     });
+                  //     projects.savedProject(widget.isSaved, widget.id);
+                  //   },
+                  //   child: CircleAvatar(
+                  //     backgroundColor: Colors.lightGreen,
+                  //     child: widget.isSaved == false
+                  //         ? Icon(
+                  //             Icons.favorite,
+                  //             color: Colors.white,
+                  //           )
+                  //         : Icon(
+                  //             Icons.favorite_border,
+                  //             color: Colors.white,
+                  //           ),
+                  //   ),
+                  // ),
                 SizedBox(
                   width: 5,
                 ),
-                if(user.userId==widget.ownerId)
-                GestureDetector(
-                  onTap: () {
-                    print(widget.id);
-                    projects.deleteProject(widget.id);
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.red,
+                if (user.userId == widget.ownerId)
+                  GestureDetector(
+                    onTap: () {
+                      print(widget.id);
+                      projects.deleteProject(widget.id);
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
             SizedBox(

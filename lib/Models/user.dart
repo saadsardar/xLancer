@@ -26,6 +26,17 @@ class User extends ChangeNotifier {
     this.dob,
     this.isSignedInWithGoogle,
   });
+  User.fromJson(Map<String, dynamic> json)
+      : this.userId = json['userId'],
+        this.email = json['email'],
+        this.name = json['name'],
+        this.bio = json['bio'],
+        this.phoneNumber = json['phoneNumber'],
+        this.picture = json['picture'],
+        this.dob = json['dob'],
+        this.isSignedInWithGoogle = json['isSignedInWithGoogle'];
+
+
 
   //google logic
   Future<String> signInWithGoogle() async {
@@ -282,6 +293,8 @@ class User extends ChangeNotifier {
           .doc(userId)
           .set(
         {
+          'name': userInfo['name'],
+          'picture': userInfo['picture'],
           'title': '',
           'location': '',
           'rate': '',
