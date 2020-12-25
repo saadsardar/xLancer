@@ -15,7 +15,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
@@ -36,19 +36,19 @@ class _TabsScreenState extends State<TabsScreen> {
                 style: TextStyle(fontSize: 20),
               ),
             ),
-            Tab(
-              child: Text(
-                'Saved',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
+            // Tab(
+            //   child: Text(
+            //     'Saved',
+            //     style: TextStyle(fontSize: 20),
+            //   ),
+            // ),
           ]),
         ),
         body: TabBarView(
           children: <Widget>[
             MyFeedScreen(),
             SearchScreen(),
-            SavedScreen(),
+            //SavedScreen(),
           ],
         ),
       ),

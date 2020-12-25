@@ -14,6 +14,7 @@ class EditRateState extends State<EditRate> {
   final _formkey = GlobalKey<FormState>();
 
   FocusNode titleFocusNode;
+  //final myController = TextEditingController();
 
   String _summary;
   bool _isLoading = false;
@@ -29,6 +30,9 @@ class EditRateState extends State<EditRate> {
     titleFocusNode.dispose();
     super.dispose();
   }
+  // clearTextInput(){
+  //     myController.clear();
+  //   }
 
   Widget build(BuildContext context) {
     final userDetails = Provider.of<Freelancer>(context);
@@ -51,6 +55,21 @@ class EditRateState extends State<EditRate> {
               hintText: 'Hourly rate of your service',
               icon: Icon(Icons.info)),
         ),
+        //   child: ListTile(
+        //     title: TextField(
+        //     controller: myController,
+        //     textInputAction: TextInputAction.next,
+        //     keyboardType: TextInputType.text,
+        //     decoration: InputDecoration(
+        //       border: OutlineInputBorder(),
+        //       labelText: 'Add your skill',
+        //       hintText: 'What do you do?',
+        //       icon: Icon(Icons.work),
+        //     ),
+        //   ),
+        //   trailing: IconButton(icon: Icon(Icons.cancel),onPressed: clearTextInput,),
+        // ),
+
       );
     }
 

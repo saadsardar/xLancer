@@ -28,7 +28,6 @@ class EditNameState extends State<EditName> {
     titleFocusNode.dispose();
     super.dispose();
   }
-
   Widget build(BuildContext context) {
     final userDetails = Provider.of<User>(context);
 
@@ -49,7 +48,9 @@ class EditNameState extends State<EditName> {
               labelText: 'Name',
               hintText: 'Enter your name',
               icon: Icon(Icons.person)),
+        
         ),
+        
       );
     }
 

@@ -3,9 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/project.dart';
 import 'package:xlancer/Models/user.dart';
+import 'package:xlancer/Screens/jobs_screen.dart';
+import 'package:xlancer/Screens/my_feed_screen.dart';
+import 'package:xlancer/Screens/tabs_screen.dart';
 
 import '../main_screen.dart';
-
 
 class NewProjectScreen extends StatefulWidget {
   static const routeName = '/newproject-screen';
@@ -221,80 +223,94 @@ class _NewProjectScreenState extends State<NewProjectScreen> {
     return
         // Center(
         //   child:
-        Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      child: Center(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formkey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _showtitle(),
-                titleWidget(),
-                priceWidget(),
-                descriptionWidget(),
-                _deadlineWidget(context),
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 25,
-                    right: 20,
-                    top: 50,
-                    bottom: 10,
-                  ),
-                  child: Text(
-                    'Enter the experience level of your job post',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1),
-                  ),
-                ),
-                Container(
-                  height: 100,
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: DropdownButton<String>(
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 36,
-                    elevation: 8,
-                    style: TextStyle(color: Colors.black),
-                    items: _experienceLevel.map((String dropDownStringItem) {
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(
-                          dropDownStringItem,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      'Choose from below',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
+        Scaffold(
+      appBar: AppBar(
+        title: Text('Add a project'),
+        centerTitle: true,
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {Navigator.of(context).pushReplacementNamed(MainScreen.routeName);},
+      ),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formkey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //_showtitle(),
+                  titleWidget(),
+                  priceWidget(),
+                  descriptionWidget(),
+                  _deadlineWidget(context),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 25,
+                      right: 20,
+                      top: 50,
+                      bottom: 10,
                     ),
-                    onChanged: (String newValueSelected) {
-                      setState(() {
-                        _currentItemSelected = newValueSelected;
-                      });
-                    },
-                    value: _currentItemSelected,
+                    child: Text(
+                      'Enter the experience level of your job post',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1),
+                    ),
                   ),
-                ),
-                _submitButton(),
-              ],
+                  Container(
+                    height: 100,
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: DropdownButton<String>(
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 36,
+                      elevation: 8,
+                      style: TextStyle(color: Colors.black),
+                      items: _experienceLevel.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      hint: Text(
+                        'Choose from below',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                      onChanged: (String newValueSelected) {
+                        setState(() {
+                          _currentItemSelected = newValueSelected;
+                        });
+                      },
+                      value: _currentItemSelected,
+                    ),
+                  ),
+                  _submitButton(),
+                ],
+              ),
             ),
           ),
         ),
+        // ),
       ),
-      // ),
     );
   }
 }

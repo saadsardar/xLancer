@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'X-Lancer',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           //primarySwatch: Colors.lightBlue,
           primaryColor: Color(0xff4fab4a),

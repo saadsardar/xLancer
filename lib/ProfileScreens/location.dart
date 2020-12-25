@@ -9,6 +9,7 @@ class EditLocation extends StatefulWidget {
 }
 
 class EditLocationState extends State<EditLocation> {
+  //final myController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formkey = GlobalKey<FormState>();
 
@@ -28,6 +29,9 @@ class EditLocationState extends State<EditLocation> {
     titleFocusNode.dispose();
     super.dispose();
   }
+  // clearTextInput(){
+  //     myController.clear();
+  //   }
 
   Widget build(BuildContext context) {
     final userDetails = Provider.of<Freelancer>(context);
@@ -50,7 +54,26 @@ class EditLocationState extends State<EditLocation> {
               hintText: 'Riyadh, SaudiArabia',
               icon: Icon(Icons.near_me_sharp)),
         ),
+        // child: ListTile(
+        //     title: TextField(
+        //     focusNode: titleFocusNode,
+        //     controller: myController,
+        //     textInputAction: TextInputAction.next,
+        //     keyboardType: TextInputType.text,
+        //     onSubmitted: (_) => titleFocusNode.requestFocus(),
+        //     onChanged: (val) => _summary = val.trim(),
+        //     decoration: InputDecoration(
+        //       border: OutlineInputBorder(),
+        //       labelText: 'Location',
+        //       hintText: 'Riyadh, SaudiArabia',
+        //       icon: Icon(Icons.location_on,size: 30,),
+        //     ),
+        //   ),
+        //   trailing: IconButton(icon: Icon(Icons.cancel),onPressed: clearTextInput,),
+        // ),
+          
       );
+
     }
 
     void _failSnackbar(String e) {

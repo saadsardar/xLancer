@@ -14,6 +14,8 @@ class EditSummaryState extends State<EditSummary> {
   final _formkey = GlobalKey<FormState>();
 
   FocusNode titleFocusNode;
+    //final myController = TextEditingController();
+
 
   String _summary;
   bool _isLoading = false;
@@ -29,6 +31,9 @@ class EditSummaryState extends State<EditSummary> {
     titleFocusNode.dispose();
     super.dispose();
   }
+  // clearTextInput(){
+  //     myController.clear();
+  //   }
 
   Widget build(BuildContext context) {
     final userDetails = Provider.of<Freelancer>(context);
@@ -51,6 +56,23 @@ class EditSummaryState extends State<EditSummary> {
               hintText: 'Explain everything about your services',
               icon: Icon(Icons.info)),
         ),
+        // child: ListTile(
+        //     title: TextField(
+        //     focusNode: titleFocusNode,
+        //     controller: myController,
+        //     textInputAction: TextInputAction.next,
+        //     keyboardType: TextInputType.text,
+        //     onSubmitted: (_) => titleFocusNode.requestFocus(),
+        //     onChanged: (val) => _summary = val.trim(),
+        //     decoration: InputDecoration(
+        //       border: OutlineInputBorder(),
+        //       labelText: 'Summary',
+        //       hintText: 'Explain everything about your services',
+        //       icon: Icon(Icons.info,size: 30,),
+        //     ),
+        //   ),
+        //   trailing: IconButton(icon: Icon(Icons.cancel),onPressed: clearTextInput,),
+        // ),
       );
     }
 

@@ -11,39 +11,42 @@ class AppDrawer extends StatelessWidget {
     final user = Provider.of<User>(context, listen: false);
     return Drawer(
       child: Container(
-        color: Theme.of(context).primaryColor,
+        //color: Theme.of(context).primaryColor,
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text(
-                user.name,
-                //'Kazim Ali',
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              accountEmail: Text(
-                user.email,
-                //'kazim@gmail.com',
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              currentAccountPicture: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                child: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  backgroundImage:
-                      //user.picture == ''
-                      //? AssetImage('assets/userIcon.png')
-                      //:
-                      NetworkImage(
-                        user.picture,
-                          //'https://scontent.fkhi1-1.fna.fbcdn.net/v/t1.0-9/100710758_3248559528501885_7339629351110967296_o.jpg?_nc_cat=109&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeHqx3HmEwph4a7B3zS6exaufXwA9OioYYJ9fAD06KhhgqwWwq3U-GtqjSJ9MDHNB4xXRw99kXnM_7m7qNZp-w64&_nc_ohc=c5q2fZ7dn_AAX9C-y4u&_nc_ht=scontent.fkhi1-1.fna&oh=2c2ac396fdbadf5f856fd07d7ea3d577&oe=5FEE557C'
-                          ),
-                  // ? 'https://cdn4.vectorstock.com/i/1000x1000/23/18/male-avatar-icon-flat-vector-19152318.jpg'
-                  // child: ClipOval(
-                  //   child: Image.network(
-                  //     user.picture,
-                  //     // "https://cdn4.vectorstock.com/i/1000x1000/23/18/male-avatar-icon-flat-vector-19152318.jpg",
-                  //   ),
-                  // ),
+            Container(
+              color: Colors.white,
+              child: UserAccountsDrawerHeader(
+                accountName: Text(
+                  user.name,
+                  //'Kazim Ali',
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                accountEmail: Text(
+                  user.email,
+                  //'kazim@gmail.com',
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                currentAccountPicture: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black,
+                    backgroundImage:
+                        //user.picture == ''
+                        //? AssetImage('assets/userIcon.png')
+                        //:
+                        NetworkImage(
+                          user.picture,
+                            //'https://scontent.fkhi1-1.fna.fbcdn.net/v/t1.0-9/100710758_3248559528501885_7339629351110967296_o.jpg?_nc_cat=109&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeHqx3HmEwph4a7B3zS6exaufXwA9OioYYJ9fAD06KhhgqwWwq3U-GtqjSJ9MDHNB4xXRw99kXnM_7m7qNZp-w64&_nc_ohc=c5q2fZ7dn_AAX9C-y4u&_nc_ht=scontent.fkhi1-1.fna&oh=2c2ac396fdbadf5f856fd07d7ea3d577&oe=5FEE557C'
+                            ),
+                    // ? 'https://cdn4.vectorstock.com/i/1000x1000/23/18/male-avatar-icon-flat-vector-19152318.jpg'
+                    // child: ClipOval(
+                    //   child: Image.network(
+                    //     user.picture,
+                    //     // "https://cdn4.vectorstock.com/i/1000x1000/23/18/male-avatar-icon-flat-vector-19152318.jpg",
+                    //   ),
+                    // ),
+                  ),
                 ),
               ),
             ),
@@ -131,6 +134,7 @@ class AppDrawer extends StatelessWidget {
             //       print('object');
             //     },
             //   ),
+            Divider(),
             ListTile(
               leading: Icon(
                 Icons.exit_to_app,

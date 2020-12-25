@@ -12,6 +12,7 @@ import 'package:xlancer/ProfileScreens/rate.dart';
 import 'package:xlancer/ProfileScreens/skills.dart';
 import 'package:xlancer/ProfileScreens/summary.dart';
 import 'package:xlancer/ProfileScreens/title.dart';
+import 'package:xlancer/Screens/main_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -35,43 +36,59 @@ class _ProfilePageState extends State<ProfilePage> {
             primary: false,
             itemCount: tags.length == 0 ? 0 : tags.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: Colors.green, spreadRadius: 1),
-                          ],
-                        ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(Icons.work),
-                    Container(
-                        // decoration: BoxDecoration(
-                        //   borderRadius: BorderRadius.circular(10),
-                        //   color: Colors.white,
-                        //   boxShadow: [
-                        //     BoxShadow(color: Colors.green, spreadRadius: 3),
-                        //   ],
-                        // ),
-                        child: Text(tags[index], style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,),
-                         ),
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                          await userInfo2.delelteSkill(tags[index]);
-                          setState(() {});
-                        },
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
+              return
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     color: Colors.white,
+                  //     boxShadow: [
+                  //       BoxShadow(color: Colors.green, spreadRadius: 1),
+                  //     ],
+                  //   ),
+                  //   child:
+                  Row(
+                children: [
+                  Icon(
+                    Icons.check_box,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  //Container(
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(10),
+                  //   color: Colors.white,
+                  //   boxShadow: [
+                  //     BoxShadow(color: Colors.green, spreadRadius: 3),
+                  //   ],
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                    child: Text(
+                      tags[index],
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  //),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await userInfo2.delelteSkill(tags[index]);
+                      setState(() {});
+                    },
+                    icon: Icon(
+                      Icons.cancel,
+                      //color: Colors.red,
+                    ),
+                  ),
+                ],
+                // ),
               );
             }),
       );
@@ -138,6 +155,17 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        centerTitle: true,
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+          },
+        ),
       ),
       body: SingleChildScrollView(
           child: Column(
@@ -146,30 +174,47 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Row(
               children: [
                 //Text(userInfo.name.toString()),
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: userInfo.picture == ''
-                      ? AssetImage(
-                          'assets/portfolio.jpeg',
-                        )
-                      : NetworkImage(
-                          userInfo.picture,
+                Container(
+                  width: 100,
+                  height: 150,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          color: Theme.of(context).accentColor,
+                          icon: Icon(
+                            Icons.edit,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(EditPicture.routeName)
+                                .then((value) => setState(() {}));
+                          },
                         ),
-                ),
-                IconButton(
-                  color: Theme.of(context).accentColor,
-                  icon: Icon(
-                    Icons.edit,
-                    size: 18,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        width: 100,
+                        height: 130,
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: userInfo.picture == ''
+                              ? AssetImage(
+                                  'assets/portfolio.jpeg',
+                                )
+                              : NetworkImage(
+                                  userInfo.picture,
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(EditPicture.routeName)
-                        .then((value) => setState(() {}));
-                  },
                 ),
+
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(6.0),
                   child: Column(
                     children: [
                       Padding(
@@ -179,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Text(
                               userInfo.name,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -187,7 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Theme.of(context).accentColor,
                               icon: Icon(
                                 Icons.edit,
-                                size: 18,
+                                size: 25,
                               ),
                               onPressed: () {
                                 Navigator.of(context)
@@ -202,10 +247,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         //mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(6.0),
                             child: Icon(
-                              FontAwesomeIcons.locationArrow,
-                              size: 15,
+                              Icons.location_on,
+                              //FontAwesomeIcons.,
+                              size: 25,
                             ),
                           ),
                           Padding(
@@ -215,7 +261,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 //  ? null
                                 //:
                                 Text(
-                              userInfo2.location ?? 'Choose Location',
+                              userInfo2.location.toString() == null
+                                  ? 'Choose location'
+                                  : userInfo2.location.toString(),
+                              // userInfo2.location ?? 'Choose Location',
                               // 'Karachi, Pakistan',
                               style: TextStyle(
                                 fontSize: 15,
@@ -227,7 +276,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Theme.of(context).accentColor,
                             icon: Icon(
                               Icons.edit,
-                              size: 18,
+                              size: 25,
                             ),
                             onPressed: () {
                               Navigator.of(context)
@@ -272,7 +321,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).accentColor,
                         icon: Icon(
                           Icons.edit,
-                          size: 18,
+                          size: 25,
                         ),
                         onPressed: () {
                           Navigator.of(context)
@@ -303,7 +352,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       //userInfo2.rate == ''
                       //? null
                       //:
-                      Text('\$'),
+                      Text(
+                        '\$ ',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Text(
                         userInfo2.rate ?? 'Add your Rate',
                         //'9.00/hr',
@@ -316,7 +371,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).accentColor,
                         icon: Icon(
                           Icons.edit,
-                          size: 18,
+                          size: 25,
                         ),
                         onPressed: () {
                           Navigator.of(context)
@@ -349,14 +404,17 @@ class _ProfilePageState extends State<ProfilePage> {
                           userInfo2.summary ?? 'Add Summary',
                           //'dsvbihabicbajcoaocadocbadobcoadbuoabcoa',
                           style: TextStyle(
-                            fontSize: 15,
-                            //fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       IconButton(
                         color: Theme.of(context).accentColor,
-                        icon: Icon(Icons.edit, size: 18),
+                        icon: Icon(
+                          Icons.edit,
+                          size: 25,
+                        ),
                         onPressed: () {
                           Navigator.of(context)
                               .pushNamed(EditSummary.routeName)
@@ -406,17 +464,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         width: 10,
                       ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                          color: Theme.of(context).accentColor,
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(AddPortfolio.routeName)
-                                .then((value) => setState(() {}));
-                          },
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Colors.white,
+                          child: IconButton(
+                            color: Theme.of(context).accentColor,
+                            icon: Icon(
+                              Icons.add,
+                              size: 25,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(AddPortfolio.routeName)
+                                  .then((value) => setState(() {}));
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -521,7 +585,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         backgroundColor: Colors.white,
                         child: IconButton(
                           color: Theme.of(context).accentColor,
-                          icon: Icon(Icons.add),
+                          icon: Icon(
+                            Icons.add,
+                            size: 25,
+                          ),
                           onPressed: () {
                             //     Navigator.of(context)
                             // .pushNamed(EditSkills.routeName)
@@ -629,7 +696,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           backgroundColor: Colors.white,
                           child: IconButton(
                             color: Theme.of(context).accentColor,
-                            icon: Icon(Icons.add),
+                            icon: Icon(
+                              Icons.add,
+                              size: 25,
+                            ),
                             onPressed: () {
                               Navigator.of(context)
                                   .pushNamed(AddCertificate.routeName)

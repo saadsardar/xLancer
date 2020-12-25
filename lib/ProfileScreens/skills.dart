@@ -61,20 +61,25 @@ class _EditSkillsState extends State<EditSkills> {
       });
       Navigator.pop(context);
     }
-
+    clearTextInput(){
+      myController.clear();
+    }
     Widget _nameTextfield() {
       return Padding(
         padding: EdgeInsets.only(top: 20),
-        child: TextField(
-          controller: myController,
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Add your skill',
-            hintText: 'What do you do?',
-            icon: Icon(Icons.work),
+        child: ListTile(
+            title: TextField(
+            controller: myController,
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Add your skill',
+              hintText: 'What do you do?',
+              icon: Icon(Icons.work),
+            ),
           ),
+          trailing: IconButton(icon: Icon(Icons.cancel),onPressed: clearTextInput,),
         ),
       );
     }
