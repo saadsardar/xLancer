@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
+import 'package:xlancer/Models/user.dart';
 
 class EditRate extends StatefulWidget {
   static const routeName = '/edit-rate-screen';
@@ -97,8 +98,10 @@ class EditRateState extends State<EditRate> {
         Map<String, dynamic> userInfo = {
           'rate': _summary,
         };
+                final userId = Provider.of<User>(context, listen: false).userId;
+
         await Provider.of<Freelancer>(context, listen: false)
-            .editrate(userInfo);
+            .editrate(userId,userInfo);
       } else {
         print('Invalid Entry');
         _failSnackbar('Invalid Entry');

@@ -36,8 +36,6 @@ class User extends ChangeNotifier {
         this.dob = json['dob'],
         this.isSignedInWithGoogle = json['isSignedInWithGoogle'];
 
-
-
   //google logic
   Future<String> signInWithGoogle() async {
     String msg = '';
@@ -246,16 +244,20 @@ class User extends ChangeNotifier {
     // UserCredential userCredential;
     var msg = '';
     try {
+      //final user =
       await FirebaseUser.FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: emailAdd, password: pass)
           .then((value) {
         userId = value.user.uid;
         email = emailAdd;
         phoneNumber = phoneNum;
+        
         // addUserDetailsDemo();
         // addUserDetails();
         // return;
       });
+      //await user.sendEmailVerification();
+
     } on FirebaseUser.FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         print('Email Already In Use');

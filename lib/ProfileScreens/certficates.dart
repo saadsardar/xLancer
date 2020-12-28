@@ -51,7 +51,9 @@ class _AddCertificateState extends State<AddCertificate> {
       Map<String, dynamic> userInfo = {
         'link': dpurl,
       };
-      await Provider.of<Freelancer>(context, listen: false).addcertificate(userInfo);
+              final userId = Provider.of<User>(context, listen: false).userId;
+
+      await Provider.of<Freelancer>(context, listen: false).addcertificate(userId,userInfo);
       setState(() {
         _isLoading = false;
       });

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
+import 'package:xlancer/Models/user.dart';
 
 class EditSkills extends StatefulWidget {
   static const routeName = '/edit-skills-screen';
@@ -50,7 +51,10 @@ class _EditSkillsState extends State<EditSkills> {
       Map<String, dynamic> userInfo = {
         'tag': tag,
       };
-      await Provider.of<Freelancer>(context, listen: false).addSkills(userInfo);
+              final userId = Provider.of<User>(context, listen: false).userId;
+
+      
+      await Provider.of<Freelancer>(context, listen: false).addSkills(userId,userInfo);
       //    }
       // else {
       //   print('Invalid Entry');

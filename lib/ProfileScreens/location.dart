@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
+import 'package:xlancer/Models/user.dart';
 
 class EditLocation extends StatefulWidget {
   static const routeName = '/edit-location-screen';
@@ -100,8 +101,10 @@ class EditLocationState extends State<EditLocation> {
         Map<String, dynamic> userInfo = {
           'location': _summary,
         };
+                final userId = Provider.of<User>(context, listen: false).userId;
+
         await Provider.of<Freelancer>(context, listen: false)
-            .editlocation(userInfo);
+            .editlocation(userId,userInfo);
       } else {
         print('Invalid Entry');
         _failSnackbar('Invalid Entry');

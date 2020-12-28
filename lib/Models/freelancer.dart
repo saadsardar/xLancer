@@ -71,9 +71,10 @@ class Freelancer extends ChangeNotifier {
       //userInfo['skills'];
       //comments = userInfo['comments'];
       rate = userInfo['rate'];
+      
 
       final dataSnapshot0 = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/skills/')
+          .collection('freelancers/${user.userId}/skills/')
           .get();
       //print('Fetech $skills');
       final data0 = dataSnapshot0.docs;
@@ -91,7 +92,7 @@ class Freelancer extends ChangeNotifier {
       print("Getting links");
       skills = rand0;
       final dataSnapshot = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/certicates/')
+          .collection('freelancers/${user.userId}/certicates/')
           .get();
       //print('Fetech $skills');
       final data = dataSnapshot.docs;
@@ -109,7 +110,7 @@ class Freelancer extends ChangeNotifier {
       certifications = rand;
       // print("Getting links222");
       final dataSnapshot2 = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/portfolio/')
+          .collection('freelancers/${user.userId}/portfolio/')
           .get();
       final data2 = dataSnapshot2.docs;
       data2.forEach(
@@ -131,11 +132,12 @@ class Freelancer extends ChangeNotifier {
     return errormsg;
   }
 
-  Future<void> edittitle(Map<String, dynamic> userInfo) async {
+  Future<void> edittitle(String userID, Map<String, dynamic> userInfo) async {
     try {
+      print('User id is $userId');
       await FirebaseFirestore.instance
           .collection('freelancers')
-          .doc(userId)
+          .doc(userID)
           .update(
         {
           'title': userInfo['title'],
@@ -149,11 +151,12 @@ class Freelancer extends ChangeNotifier {
     return;
   }
 
-  Future<void> editlocation(Map<String, dynamic> userInfo) async {
+  Future<void> editlocation(
+      String userID, Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
           .collection('freelancers')
-          .doc(userId)
+          .doc(userID)
           .update(
         {
           'location': userInfo['location'],
@@ -167,11 +170,11 @@ class Freelancer extends ChangeNotifier {
     return;
   }
 
-  Future<void> editrate(Map<String, dynamic> userInfo) async {
+  Future<void> editrate(String userID, Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
           .collection('freelancers')
-          .doc(userId)
+          .doc(userID)
           .update(
         {
           'rate': userInfo['rate'],
@@ -185,11 +188,11 @@ class Freelancer extends ChangeNotifier {
     return;
   }
 
-  Future<void> editsummary(Map<String, dynamic> userInfo) async {
+  Future<void> editsummary(String userID, Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
           .collection('freelancers')
-          .doc(userId)
+          .doc(userID)
           .update(
         {
           'summary': userInfo['summary'],
@@ -255,10 +258,11 @@ class Freelancer extends ChangeNotifier {
   //   notifyListeners();
   //   return;
   // }
-  Future<void> addcertificate(Map<String, dynamic> userInfo) async {
+  Future<void> addcertificate(
+      String userID, Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
-          .collection('freelancers/$userId/certicates/')
+          .collection('freelancers/$userID/certicates/')
           .add(
         {
           'link': userInfo['link'],
@@ -272,10 +276,10 @@ class Freelancer extends ChangeNotifier {
     return;
   }
 
-  Future<void> addSkills(Map<String, dynamic> userInfo) async {
+  Future<void> addSkills(String userID, Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
-          .collection('freelancers/$userId/skills/')
+          .collection('freelancers/$userID/skills/')
           .add(
         {
           'skills': userInfo['tag'],
@@ -289,10 +293,10 @@ class Freelancer extends ChangeNotifier {
     return;
   }
 
-  Future<void> delelteSkill(String link) async {
+  Future<void> delelteSkill(String userID, String link) async {
     try {
       final dataSnapshot = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/skills/')
+          .collection('freelancers/$userID/skills/')
           .get();
       final data = dataSnapshot.docs;
       data.forEach(
@@ -302,7 +306,7 @@ class Freelancer extends ChangeNotifier {
           if (link == map['skills']) {
             // l.add(map2['link']);
             FirebaseFirestore.instance
-                .collection('freelancers/$userId/skills/')
+                .collection('freelancers/$userID/skills/')
                 .doc(map['id'])
                 .delete();
           }
@@ -315,10 +319,10 @@ class Freelancer extends ChangeNotifier {
     print('Deleting skill done');
   }
 
-  Future<void> deleltePortfolio(String link) async {
+  Future<void> deleltePortfolio(String userID, String link) async {
     try {
       final dataSnapshot = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/portfolio/')
+          .collection('freelancers/$userID/portfolio/')
           .get();
       final data = dataSnapshot.docs;
       data.forEach(
@@ -328,14 +332,14 @@ class Freelancer extends ChangeNotifier {
           if (link == map['link']) {
             // l.add(map2['link']);
             FirebaseFirestore.instance
-                .collection('freelancers/$userId/portfolio/')
+                .collection('freelancers/$userID/portfolio/')
                 .doc(map['id'])
                 .delete();
           }
         },
       );
       final dataSnapshot2 = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/certicates/')
+          .collection('freelancers/$userID/certicates/')
           .get();
       final data2 = dataSnapshot2.docs;
       data2.forEach(
@@ -345,7 +349,7 @@ class Freelancer extends ChangeNotifier {
           if (link == map2['link']) {
             // l.add(map2['link']);
             FirebaseFirestore.instance
-                .collection('freelancers/$userId/certicates/')
+                .collection('freelancers/$userID/certicates/')
                 .doc(map2['id'])
                 .delete();
           }
@@ -359,10 +363,11 @@ class Freelancer extends ChangeNotifier {
     print('Deleting done');
   }
 
-  Future<void> addportfolio(Map<String, dynamic> userInfo) async {
+  Future<void> addportfolio(
+      String userID, Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
-          .collection('freelancers/$userId/portfolio/')
+          .collection('freelancers/$userID/portfolio/')
           .add(
         {
           'link': userInfo['link'],

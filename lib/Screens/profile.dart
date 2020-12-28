@@ -23,6 +23,13 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final userInfo = Provider.of<User>(context, listen: false);
+    Future<void> setFreelancer() async {
+      print('Called');
+      await Provider.of<Freelancer>(context, listen: false)
+          .setFreelancer(userInfo);
+    }
+
+    setFreelancer();
     final userInfo2 = Provider.of<Freelancer>(context, listen: false);
     print("userInfo2.portfolio");
     print(userInfo2.skills);
@@ -79,7 +86,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   IconButton(
                     onPressed: () async {
-                      await userInfo2.delelteSkill(tags[index]);
+                      final userId =
+                          Provider.of<User>(context, listen: false).userId;
+
+                      await userInfo2.delelteSkill(userId, tags[index]);
                       setState(() {});
                     },
                     icon: Icon(
@@ -140,7 +150,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.red,
                         ),
                         onPressed: () async {
-                          await userInfo2.deleltePortfolio(images[index]);
+                          final userId =
+                              Provider.of<User>(context, listen: false).userId;
+
+                          await userInfo2.deleltePortfolio(
+                              userId, images[index]);
                           setState(() {});
                         }),
                   ),

@@ -51,7 +51,9 @@ class _AddPortfolioState extends State<AddPortfolio> {
       Map<String, dynamic> userInfo = {
         'link': dpurl,
       };
-      await Provider.of<Freelancer>(context, listen: false).addportfolio(userInfo);
+              final userId = Provider.of<User>(context, listen: false).userId;
+
+      await Provider.of<Freelancer>(context, listen: false).addportfolio(userId,userInfo);
       setState(() {
         _isLoading = false;
       });

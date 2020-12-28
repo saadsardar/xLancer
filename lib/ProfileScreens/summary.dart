@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
+import 'package:xlancer/Models/user.dart';
+
 
 class EditSummary extends StatefulWidget {
   static const routeName = '/edit-summary-screen';
@@ -100,8 +102,9 @@ class EditSummaryState extends State<EditSummary> {
         Map<String, dynamic> userInfo = {
           'summary': _summary,
         };
+        final userId = Provider.of<User>(context, listen: false).userId;
         await Provider.of<Freelancer>(context, listen: false)
-            .editsummary(userInfo);
+            .editsummary(userId,userInfo);
       } else {
         print('Invalid Entry');
         _failSnackbar('Invalid Entry');
