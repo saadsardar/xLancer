@@ -122,6 +122,8 @@ class User extends ChangeNotifier {
           .doc(userId)
           .set(
         {
+          'name': name,
+          'picture': picture,
           'title': 'Add your Title',
           'location': 'Add Location',
           'rate': '0.00',
@@ -180,6 +182,12 @@ class User extends ChangeNotifier {
       if (userSnap.data().isEmpty) {
         msg = 'Not Authorized';
       } else {
+            FirebaseUser.User user = FirebaseUser.FirebaseAuth.instance.currentUser;
+
+        if (!user.emailVerified) {
+          msg = 'Please verify email before login';
+          signOut();
+        }
         _isLoggedin = true;
         notifyListeners();
       }
@@ -251,13 +259,13 @@ class User extends ChangeNotifier {
         userId = value.user.uid;
         email = emailAdd;
         phoneNumber = phoneNum;
-        
+
         // addUserDetailsDemo();
         // addUserDetails();
         // return;
       });
-      //await user.sendEmailVerification();
 
+      // await user.sendEmailVerification();
     } on FirebaseUser.FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         print('Email Already In Use');
@@ -306,6 +314,12 @@ class User extends ChangeNotifier {
           'certificates': '',
         },
       );
+      FirebaseUser.User user = FirebaseUser.FirebaseAuth.instance.currentUser;
+
+      if (!user.emailVerified) {
+        await user.sendEmailVerification();
+      }
+      signOut();
     } catch (e) {
       print(e);
       msg = e.toString();

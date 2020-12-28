@@ -32,11 +32,15 @@ class ProjectDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final apply = Provider.of<ProjectsInfo>(context, listen: false);
+
     //final project = Provider.of<Projects>(context, listen: false);
     final user = Provider.of<User>(context, listen: false);
-    //bool isapplied = false;
+    bool isApproved = false;
+    bool isComplete = false;
     Future<bool> checkifapplied() async {
       var isapplied = await apply.isApplied(id, user.userId);
+      isApproved = await apply.isApprove(id, user.userId);
+      isComplete = await apply.isComplete(id, user.userId);
       return isapplied;
     }
 
@@ -314,42 +318,89 @@ class ProjectDescription extends StatelessWidget {
                   //   color: Theme.of(context).primaryColor,
 
                   // ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: RawMaterialButton(
-                      shape: new RoundedRectangleBorder(),
-                      elevation: 0.0,
-                      child: Container(
-                        width: 200,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: Theme.of(context).accentColor,
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: RawMaterialButton(
+                          shape: new RoundedRectangleBorder(),
+                          elevation: 0.0,
+                          child: Container(
+                            width: 200,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              color: Theme.of(context).accentColor,
+                            ),
+                            child: Center(
+                              child: snap.data == false
+                                  ? Text(
+                                      "Apply",
+                                      //:"Applied",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                      ),
+                                    )
+                                  : isApproved
+                                      ? Text(
+                                          "Approved",
+                                          //:"Applied",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                          ),
+                                        )
+                                      : Text(
+                                          "Applied",
+                                          //:"Applied",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                          ),
+                                        ),
+                            ),
+                          ),
+                          onPressed: () {
+                            snap.data == false ? _showMyDialog() : null;
+                          },
                         ),
-                        child: Center(
-                          child: snap.data == false
-                              ? Text(
-                                  "Apply",
-                                  //:"Applied",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                  ),
-                                )
-                              : Text(
-                                  "Applied",
-                                  //:"Applied",
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      if (isApproved)
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: RawMaterialButton(
+                            shape: new RoundedRectangleBorder(),
+                            elevation: 0.0,
+                            onPressed: () async {
+                              await apply.finishProject(id, user.userId);
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              width: 200,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: Theme.of(context).accentColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Mark as Done",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 24,
                                   ),
                                 ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        snap.data == false ? _showMyDialog() : null;
-                      },
-                    ),
+                    ],
                   ),
                 if (user.userId == ownerId)
                   Align(

@@ -5,7 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/user.dart' as UserClass;
+import 'package:xlancer/Screens/SignUp/register.dart';
 import 'package:xlancer/Screens/splashScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart' as FirebaseUser;
 
 // import '../../home.dart';
 // import '../main_screen.dart';
@@ -256,7 +258,7 @@ class _RegisterUserDetailScreenState extends State<RegisterUserDetailScreen> {
           .addUserDetails(userInfo);
       if (msg == '') {
         Navigator.of(context).pushNamedAndRemoveUntil(
-            NavigationScreen.routeName, (route) => false);
+            RegisterPageUser.routeName, (route) => false);
         // Navigator.of(context).pushNamedAndRemoveUntil(
         //   Home.routeName,
         //   (route) => false,
@@ -291,7 +293,11 @@ class _RegisterUserDetailScreenState extends State<RegisterUserDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // FirebaseUser.User user = FirebaseUser.FirebaseAuth.instance.currentUser;
+    return
+        //  user.emailVerified
+        //     ?
+        Scaffold(
       key: _scaffoldKey,
       // appBar: AppBar(
       //     // title: Text("Login"),
@@ -327,5 +333,19 @@ class _RegisterUserDetailScreenState extends State<RegisterUserDetailScreen> {
         ),
       ),
     );
+    //:
+    // Scaffold(
+    //     body: Column(
+    //   children: [
+    //     Text('Verify Email'),
+    //     RaisedButton(
+    //       child: Text('Reload'),
+    //       onPressed: () {
+    //         print('${user.emailVerified}');
+    //         setState(() {});
+    //       },
+    //     )
+    //   ],
+    // ));
   }
 }

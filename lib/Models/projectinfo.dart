@@ -51,35 +51,86 @@ class ProjectsInfo with ChangeNotifier {
     return msg;
   }
 
-  // Future<void> isApprove(String pid, String appid) async {
-  //   var id;
-  //   try {
-  //     final dataSnapshot =
-  //         await FirebaseFirestore.instance.collection('projectInfo').get();
-  //     final data = dataSnapshot.docs;
-  //     data.forEach(
-  //       (e) {
-  //         var map = e.data();
-  //         // print("Pid is $pid  & appid is $appid");
-  //         if (appid == map['appId'] && pid == map['pid']) {
-  //           map['id'] = e.id;
-  //           id = map['id'];
-  //         }
-  //       },
-  //     );
-  //     final dataSnapshot2 = await FirebaseFirestore.instance
-  //         .collection('projectInfo')
-  //         .doc(id)
-  //         .get();
-  //     final data2 = dataSnapshot2.exists;
+  Future<bool> isApprove(String pid, String appid) async {
+    var id;
+    bool approve;
+    try {
+      final dataSnapshot =
+          await FirebaseFirestore.instance.collection('projectInfo').get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          if (appid == map['appId'] && pid == map['pid']) {
+            map['id'] = e.id;
+            id = map['id'];
+          }
+        },
+      );
+      await FirebaseFirestore.instance
+          .collection('projectInfo')
+          .doc(id)
+          .get()
+          .then((value) {
+        var map2 = value.data();
+        approve = map2['approve'];
+      })
+      ;
+      // final data2 = dataSnapshot2.data();
+      // var map2 = data2;
+      // approve = map2['approve'];
 
-  //     //approve = true;
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   notifyListeners();
-  //   return;
-  // }
+      //print('object');
+      // print(data2);
+      // Map<String, dynamic> data22 = data2.data();
+
+      //approve = true;
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+    return approve;
+  }
+  Future<bool> isComplete(String pid, String appid) async {
+    var id;
+    bool done;
+    try {
+      final dataSnapshot =
+          await FirebaseFirestore.instance.collection('projectInfo').get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          if (appid == map['appId'] && pid == map['pid']) {
+            map['id'] = e.id;
+            id = map['id'];
+          }
+        },
+      );
+      await FirebaseFirestore.instance
+          .collection('projectInfo')
+          .doc(id)
+          .get()
+          .then((value) {
+        var map2 = value.data();
+        done = map2['done'];
+      })
+      ;
+      // final data2 = dataSnapshot2.data();
+      // var map2 = data2;
+      // approve = map2['approve'];
+
+      //print('object');
+      // print(data2);
+      // Map<String, dynamic> data22 = data2.data();
+
+      //approve = true;
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+    return done;
+  }
 
   Future<void> approveRequest(String pid, String appid) async {
     var id;
@@ -104,6 +155,35 @@ class ProjectsInfo with ChangeNotifier {
         },
       );
       //approve = true;
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+    return;
+  }
+
+    Future<void> finishProject(String pid, String appid) async {
+    var id;
+    try {
+      final dataSnapshot =
+          await FirebaseFirestore.instance.collection('projectInfo').get();
+      final data = dataSnapshot.docs;
+      data.forEach(
+        (e) {
+          var map = e.data();
+          // print("Pid is $pid  & appid is $appid");
+          if (appid == map['appId'] && pid == map['pid']) {
+            map['id'] = e.id;
+            id = map['id'];
+          }
+        },
+      );
+      print("Salam $id");
+      await FirebaseFirestore.instance.collection('projectInfo').doc(id).update(
+        {
+          'done': true,
+        },
+      );
     } catch (e) {
       print(e);
     }

@@ -46,13 +46,28 @@ class ViewProfilePage extends StatefulWidget {
 
 class _ViewProfilePageState extends State<ViewProfilePage> {
   @override
+  List<String> p;
+  List<String> s;
+  List<String> c;
+  bool isApproved;
+  bool isComplete;
   Widget build(BuildContext context) {
-    final userInfo = Provider.of<User>(context, listen: false);
+    //final userInfo = Provider.of<User>(context, listen: false);
     final userInfo2 = Provider.of<Freelancer>(context, listen: false);
     final pp = Provider.of<ProjectsInfo>(context, listen: false);
-    print("userInfo2.portfolio");
-    print(userInfo2.skills);
+    // print("userInfo2.portfolio");
+    // //print(userInfo2.skills);
+    // print('Widget userid is ${widget.userId}');
+
     //buildPortfolio() {}
+    setInfo() async {
+      c = await userInfo2.setUserCertificate(widget.userId);
+      p = await userInfo2.setUserPortfolio(widget.userId);
+      s = await userInfo2.setUserSkills(widget.userId);
+      isApproved = await pp.isApprove(widget.pid, widget.userId);
+      isComplete = await pp.isComplete(widget.pid, widget.userId);
+    }
+
     buildSkills(List<String> tags) {
       return Container(
         padding: EdgeInsets.only(left: 20),
@@ -165,102 +180,78 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          RaisedButton(
-            child: Text("Approve"),
-            onPressed: () {
-              print(widget.userId);
-              pp.approveRequest(widget.pid, widget.userId);
-            },
-          )
-        ],
-        title: Text('Profile'),
-      ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          Container(
-            child: Row(
-              children: [
-                //Text(userInfo.name.toString()),
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: userInfo.picture == ''
-                      ? AssetImage(
-                          'assets/nopost.png',
-                        )
-                      : NetworkImage(
-                          userInfo.picture,
-                        ),
+    return FutureBuilder(
+        future: setInfo(),
+        // _getData(),
+        builder: (ctx, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            print('hello');
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
+          } else {
+            if (snap.hasError) {
+              return Text(snap.error);
+            } else {
+              //final loadedProjects = snap.data as List<Freelancer>;
+              print('Reached here');
+              // if (loadedProjects.isEmpty) {
+              //   return Scaffold(
+              //       body: Center(
+              //     child: Text('No one Applied yet'),
+              //   ));
+              // } else {
+              return Scaffold(
+                appBar: AppBar(
+                  actions: [
+                    isApproved == false
+                        ? RaisedButton(
+                            color: Colors.lightGreen,
+                            child: Text(
+                              "Approve",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              //print(widget.userId);
+                              await pp.approveRequest(
+                                  widget.pid, widget.userId);
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        : isComplete == false
+                            ? RaisedButton(
+                                color: Colors.lightGreen,
+                                child: Text(
+                                  "Approved",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {},
+                              )
+                            : RaisedButton(
+                                color: Colors.lightGreen,
+                                child: Text(
+                                  "Completed",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {},
+                              ),
+                  ],
+                  title: Text('Profile'),
                 ),
-                // IconButton(
-                //   color: Theme.of(context).accentColor,
-                //   icon: Icon(
-                //     Icons.edit,
-                //     size: 18,
-                //   ),
-                //   onPressed: () {
-                //     Navigator.of(context)
-                //         .pushNamed(EditPicture.routeName)
-                //         .then((value) => setState(() {}));
-                //   },
-                // ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              userInfo.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            IconButton(
-                              color: Theme.of(context).accentColor,
-                              icon: Icon(
-                                Icons.edit,
-                                size: 18,
-                              ),
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(EditName.routeName)
-                                    .then((value) => setState(() {}));
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        //mainAxisAlignment: MainAxisAlignment.center,
+                body: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    Container(
+                      child: Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              FontAwesomeIcons.locationArrow,
-                              size: 15,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child:
-                                //userInfo2.location == ''
-                                //  ? null
-                                //:
-                                Text(
-                              userInfo2.location ?? 'Choose Location',
-                              // 'Karachi, Pakistan',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                          Text(widget.name.toString()),
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: widget.picture == ''
+                                ? AssetImage(
+                                    'assets/nopost.png',
+                                  )
+                                : NetworkImage(
+                                    widget.picture,
+                                  ),
                           ),
                           // IconButton(
                           //   color: Theme.of(context).accentColor,
@@ -270,474 +261,543 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                           //   ),
                           //   onPressed: () {
                           //     Navigator.of(context)
-                          //         .pushNamed(EditLocation.routeName)
+                          //         .pushNamed(EditPicture.routeName)
                           //         .then((value) => setState(() {}));
                           //   },
-                          // ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            color: Colors.grey[200],
-            height: 10,
-          ),
-          Container(
-            child: Row(
-              children: [
-                //if title is null then add title
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                  ),
-                  child: Row(
-                    children: [
-                      // userInfo2.title == ''
-                      //     ? null
-                      //:
-                      Text(
-                        userInfo2.title ?? 'Add Title',
-                        //'Flutter Developer',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      // IconButton(
-                      //   color: Theme.of(context).accentColor,
-                      //   icon: Icon(
-                      //     Icons.edit,
-                      //     size: 18,
-                      //   ),
-                      //   onPressed: () {
-                      //     Navigator.of(context)
-                      //         .pushNamed(EditTitle.routeName)
-                      //         .then((value) => setState(() {}));
-                      //   },
-                      // ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          //           Container(
-          //   color: Colors.grey[200],
-          //   height: 10,
-          // ),
-          Container(
-            child: Row(
-              children: [
-                //if title is null then add title
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                  ),
-                  child: Row(
-                    children: [
-                      //userInfo2.rate == ''
-                      //? null
-                      //:
-                      Text('\$'),
-                      Text(
-                        userInfo2.rate ?? 'Add your Rate',
-                        //'9.00/hr',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      // IconButton(
-                      //   color: Theme.of(context).accentColor,
-                      //   icon: Icon(
-                      //     Icons.edit,
-                      //     size: 18,
-                      //   ),
-                      //   onPressed: () {
-                      //     Navigator.of(context)
-                      //         .pushNamed(EditRate.routeName)
-                      //         .then((value) => setState(() {}));
-                      //   },
-                      // ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            child: Row(
-              children: [
-                //if title is null then add title
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        child:
-                            //userInfo2.summary == ''
-                            //  ? null
-                            //:
-                            Text(
-                          userInfo2.summary ?? 'Add Summary',
-                          //'dsvbihabicbajcoaocadocbadobcoadbuoabcoa',
-                          style: TextStyle(
-                            fontSize: 15,
-                            //fontWeight: FontWeight.bold,
+                          //),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Row(
+                                    children: [
+                                      // Text(
+                                      //   widget.name,
+                                      //   style: TextStyle(
+                                      //     fontSize: 18,
+                                      //     fontWeight: FontWeight.bold,
+                                      //   ),
+                                      // ),
+                                      IconButton(
+                                        color: Theme.of(context).accentColor,
+                                        icon: Icon(
+                                          Icons.edit,
+                                          size: 18,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushNamed(EditName.routeName)
+                                              .then((value) => setState(() {}));
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  //mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        FontAwesomeIcons.locationArrow,
+                                        size: 15,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child:
+                                          //userInfo2.location == ''
+                                          //  ? null
+                                          //:
+                                          Text(
+                                        widget.location ?? 'Not availible',
+                                        // 'Karachi, Pakistan',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    // IconButton(
+                                    //   color: Theme.of(context).accentColor,
+                                    //   icon: Icon(
+                                    //     Icons.edit,
+                                    //     size: 18,
+                                    //   ),
+                                    //   onPressed: () {
+                                    //     Navigator.of(context)
+                                    //         .pushNamed(EditLocation.routeName)
+                                    //         .then((value) => setState(() {}));
+                                    //   },
+                                    // ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                      // IconButton(
-                      //   color: Theme.of(context).accentColor,
-                      //   icon: Icon(Icons.edit, size: 18),
-                      //   onPressed: () {
-                      //     Navigator.of(context)
-                      //         .pushNamed(EditSummary.routeName)
-                      //         .then((value) => setState(() {}));
-                      //   },
-                      // ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            //color: Colors.grey[200],
-            height: 20,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  //                   <--- left side
-                  color: Colors.black,
-                  width: 0.5,
-                ),
-                top: BorderSide(
-                  //                    <--- top side
-                  color: Colors.black,
-                  width: 0.5,
-                ),
-              ),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Portfolio',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                          color: Theme.of(context).accentColor,
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(AddPortfolio.routeName)
-                                .then((value) => setState(() {}));
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // if (
-
-                userInfo2.portfolio == null || userInfo2.portfolio.isEmpty
-                    //)
-                    //   {
-                    ? Column(
+                    ),
+                    Container(
+                      color: Colors.grey[200],
+                      height: 10,
+                    ),
+                    Container(
+                      child: Row(
                         children: [
-                          Image.asset(
-                            'assets/nopost.png',
-                            height: 150,
-                            width: 150,
+                          //if title is null then add title
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                            ),
+                            child: Row(
+                              children: [
+                                // userInfo2.title == ''
+                                //     ? null
+                                //:
+                                Text(
+                                  widget.title ?? 'Add Title',
+                                  //'Flutter Developer',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                // IconButton(
+                                //   color: Theme.of(context).accentColor,
+                                //   icon: Icon(
+                                //     Icons.edit,
+                                //     size: 18,
+                                //   ),
+                                //   onPressed: () {
+                                //     Navigator.of(context)
+                                //         .pushNamed(EditTitle.routeName)
+                                //         .then((value) => setState(() {}));
+                                //   },
+                                // ),
+                              ],
+                            ),
                           ),
-                          // Center(
-                          //   child: Text(
-                          //     "Ask for details in chat",
-                          //     style: TextStyle(
-                          //       fontSize: 20,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          // // Center(
-                          //   child: FlatButton(
-                          //     onPressed: () {
-                          //       Navigator.of(context)
-                          //           .pushNamed(AddPortfolio.routeName)
-                          //           .then((value) => setState(() {}));
-                          //     },
-                          //     child: Text(
-                          //       "Add items",
-                          //       style: TextStyle(
-                          //         color: Colors.green,
-                          //         fontSize: 20,
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
-                      )
-
-                    // else
-                    //   {
-                    //   if(userInfo2.portfolio.isEmpty)
-                    //    Text('data')
-
-                    : buildSlider(userInfo2.portfolio),
-                //},
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ),
-          // Container(
-          //   //color: Colors.grey[200],
-          //   height: 20,
-          // ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  //                   <--- left side
-                  color: Colors.black,
-                  width: 0.5,
-                ),
-                top: BorderSide(
-                  //                    <--- top side
-                  color: Colors.black,
-                  width: 0.5,
-                ),
-              ),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Skills',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                          color: Theme.of(context).accentColor,
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                            //     Navigator.of(context)
-                            // .pushNamed(EditSkills.routeName)
-                            // .then((value) => setState(() {}));
-                            Navigator.of(context)
-                                .pushNamed(EditSkills.routeName)
-                                .then((value) => setState(() {}));
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                userInfo2.skills == null || userInfo2.skills.isEmpty
-                    ? Column(
+                    ),
+                    //           Container(
+                    //   color: Colors.grey[200],
+                    //   height: 10,
+                    // ),
+                    Container(
+                      child: Row(
                         children: [
-                          Image.asset(
-                            'assets/nopost.png',
-                            height: 150,
-                            width: 150,
+                          //if title is null then add title
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                            ),
+                            child: Row(
+                              children: [
+                                //userInfo2.rate == ''
+                                //? null
+                                //:
+                                Text('\$'),
+                                Text(
+                                  widget.rate ?? 'Add your Rate',
+                                  //'9.00/hr',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                // IconButton(
+                                //   color: Theme.of(context).accentColor,
+                                //   icon: Icon(
+                                //     Icons.edit,
+                                //     size: 18,
+                                //   ),
+                                //   onPressed: () {
+                                //     Navigator.of(context)
+                                //         .pushNamed(EditRate.routeName)
+                                //         .then((value) => setState(() {}));
+                                //   },
+                                // ),
+                              ],
+                            ),
                           ),
-                          // Center(
-                          //   child: Text(
-                          //     "Showcase your work to impress clients",
-                          //     style: TextStyle(
-                          //       fontSize: 20,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          // Center(
-                          //   child: FlatButton(
-                          //     onPressed: () {
-                          //       Navigator.of(context)
-                          //           .pushNamed(AddPortfolio.routeName)
-                          //           .then((value) => setState(() {}));
-                          //     },
-                          //     child: Text(
-                          //       "Add items",
-                          //       style: TextStyle(
-                          //         color: Colors.green,
-                          //         fontSize: 20,
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
-                      )
-                    : //Text("data"),
-                    buildSkills(userInfo2.skills),
-              ],
-            ),
-
-            //list here which shows skills tags
-          ),
-          Container(
-            color: Colors.grey[200],
-            height: 20,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  //                   <--- left side
-                  color: Colors.black,
-                  width: 0.5,
-                ),
-                top: BorderSide(
-                  //                    <--- top side
-                  color: Colors.black,
-                  width: 0.5,
-                ),
-              ),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Certifications',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Colors.white,
-                          child: IconButton(
-                            color: Theme.of(context).accentColor,
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(AddCertificate.routeName)
-                                  .then((value) => setState(() {}));
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                userInfo2.certifications == null ||
-                        userInfo2.certifications.isEmpty
-                    //)
-                    //   {
-                    ? Column(
+                    ),
+                    Container(
+                      child: Row(
                         children: [
-                          Image.asset(
-                            'assets/nopost.png',
-                            height: 150,
-                            width: 150,
+                          //if title is null then add title
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  child:
+                                      //userInfo2.summary == ''
+                                      //  ? null
+                                      //:
+                                      Text(
+                                    widget.summary ?? 'Add Summary',
+                                    //'dsvbihabicbajcoaocadocbadobcoadbuoabcoa',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      //fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                // IconButton(
+                                //   color: Theme.of(context).accentColor,
+                                //   icon: Icon(Icons.edit, size: 18),
+                                //   onPressed: () {
+                                //     Navigator.of(context)
+                                //         .pushNamed(EditSummary.routeName)
+                                //         .then((value) => setState(() {}));
+                                //   },
+                                // ),
+                              ],
+                            ),
                           ),
-                          // Center(
-                          //   child: Text(
-                          //     "Showcase your Certificates to impress clients",
-                          //     style: TextStyle(
-                          //       fontSize: 20,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          // Center(
-                          //   child: FlatButton(
-                          //     onPressed: () {
-                          //       Navigator.of(context)
-                          //           .pushNamed(AddPortfolio.routeName)
-                          //           .then((value) => setState(() {}));
-                          //     },
-                          //     child: Text(
-                          //       "Add items",
-                          //       style: TextStyle(
-                          //         color: Colors.green,
-                          //         fontSize: 20,
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
-                      )
+                      ),
+                    ),
+                    Container(
+                      //color: Colors.grey[200],
+                      height: 20,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            //                   <--- left side
+                            color: Colors.black,
+                            width: 0.5,
+                          ),
+                          top: BorderSide(
+                            //                    <--- top side
+                            color: Colors.black,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Portfolio',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                // CircleAvatar(
+                                //   radius: 16,
+                                //   backgroundColor: Colors.white,
+                                //   child: IconButton(
+                                //     color: Theme.of(context).accentColor,
+                                //     icon: Icon(Icons.add),
+                                //     onPressed: () {
+                                //       Navigator.of(context)
+                                //           .pushNamed(AddPortfolio.routeName)
+                                //           .then((value) => setState(() {}));
+                                //     },
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          // if (
 
-                    // else
-                    //   {
-                    //   if(userInfo2.portfolio.isEmpty)
-                    //    Text('data')
+                          p == null || p.isEmpty
+                              //)
+                              //   {
+                              ? Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/nopost.png',
+                                      height: 150,
+                                      width: 150,
+                                    ),
+                                    // Center(
+                                    //   child: Text(
+                                    //     "Ask for details in chat",
+                                    //     style: TextStyle(
+                                    //       fontSize: 20,
+                                    //       fontWeight: FontWeight.bold,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    // // Center(
+                                    //   child: FlatButton(
+                                    //     onPressed: () {
+                                    //       Navigator.of(context)
+                                    //           .pushNamed(AddPortfolio.routeName)
+                                    //           .then((value) => setState(() {}));
+                                    //     },
+                                    //     child: Text(
+                                    //       "Add items",
+                                    //       style: TextStyle(
+                                    //         color: Colors.green,
+                                    //         fontSize: 20,
+                                    //         fontWeight: FontWeight.bold,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                )
 
-                    : buildSlider(userInfo2.certifications),
-                //},
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ),
-        ],
-      )),
-    );
+                              // else
+                              //   {
+                              //   if(userInfo2.portfolio.isEmpty)
+                              //    Text('data')
+
+                              : buildSlider(p),
+                          //},
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Container(
+                    //   //color: Colors.grey[200],
+                    //   height: 20,
+                    // ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            //                   <--- left side
+                            color: Colors.black,
+                            width: 0.5,
+                          ),
+                          top: BorderSide(
+                            //                    <--- top side
+                            color: Colors.black,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Skills',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                // CircleAvatar(
+                                //   radius: 16,
+                                //   backgroundColor: Colors.white,
+                                //   child: IconButton(
+                                //     color: Theme.of(context).accentColor,
+                                //     icon: Icon(Icons.add),
+                                //     onPressed: () {
+                                //       //     Navigator.of(context)
+                                //       // .pushNamed(EditSkills.routeName)
+                                //       // .then((value) => setState(() {}));
+                                //       Navigator.of(context)
+                                //           .pushNamed(EditSkills.routeName)
+                                //           .then((value) => setState(() {}));
+                                //     },
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          s == null || s.isEmpty
+                              ? Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/nopost.png',
+                                      height: 150,
+                                      width: 150,
+                                    ),
+                                    // Center(
+                                    //   child: Text(
+                                    //     "Showcase your work to impress clients",
+                                    //     style: TextStyle(
+                                    //       fontSize: 20,
+                                    //       fontWeight: FontWeight.bold,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    // Center(
+                                    //   child: FlatButton(
+                                    //     onPressed: () {
+                                    //       Navigator.of(context)
+                                    //           .pushNamed(AddPortfolio.routeName)
+                                    //           .then((value) => setState(() {}));
+                                    //     },
+                                    //     child: Text(
+                                    //       "Add items",
+                                    //       style: TextStyle(
+                                    //         color: Colors.green,
+                                    //         fontSize: 20,
+                                    //         fontWeight: FontWeight.bold,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                )
+                              : //Text("data"),
+                              buildSkills(s),
+                        ],
+                      ),
+
+                      //list here which shows skills tags
+                    ),
+                    Container(
+                      color: Colors.grey[200],
+                      height: 20,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            //                   <--- left side
+                            color: Colors.black,
+                            width: 0.5,
+                          ),
+                          top: BorderSide(
+                            //                    <--- top side
+                            color: Colors.black,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Certifications',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: CircleAvatar(
+                                //     radius: 16,
+                                //     backgroundColor: Colors.white,
+                                //     child: IconButton(
+                                //       color: Theme.of(context).accentColor,
+                                //       icon: Icon(Icons.add),
+                                //       onPressed: () {
+                                //         Navigator.of(context)
+                                //             .pushNamed(AddCertificate.routeName)
+                                //             .then((value) => setState(() {}));
+                                //       },
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          c == null || c.isEmpty
+                              //)
+                              //   {
+                              ? Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/nopost.png',
+                                      height: 150,
+                                      width: 150,
+                                    ),
+                                    // Center(
+                                    //   child: Text(
+                                    //     "Showcase your Certificates to impress clients",
+                                    //     style: TextStyle(
+                                    //       fontSize: 20,
+                                    //       fontWeight: FontWeight.bold,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    // Center(
+                                    //   child: FlatButton(
+                                    //     onPressed: () {
+                                    //       Navigator.of(context)
+                                    //           .pushNamed(AddPortfolio.routeName)
+                                    //           .then((value) => setState(() {}));
+                                    //     },
+                                    //     child: Text(
+                                    //       "Add items",
+                                    //       style: TextStyle(
+                                    //         color: Colors.green,
+                                    //         fontSize: 20,
+                                    //         fontWeight: FontWeight.bold,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                )
+
+                              // else
+                              //   {
+                              //   if(userInfo2.portfolio.isEmpty)
+                              //    Text('data')
+
+                              : buildSlider(c),
+                          //},
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+              );
+            }
+          }
+        });
   }
 }

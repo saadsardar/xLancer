@@ -91,7 +91,7 @@ class _ProfileItemState extends State<ProfileItem> {
                                   child: Container(
                                     padding: const EdgeInsets.all(13.0),
                                     child: Text(
-                                      loadedProjects[i].name,
+                                      loadedProjects[i].name.toString(),
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: Colors.black,

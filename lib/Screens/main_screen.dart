@@ -51,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> setUserLocal(
-      User user, Freelancer freelancer, Projects project) async {
+      String user2,User user, Freelancer freelancer, Projects project) async {
     var msg = '';
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -64,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
     }
     try {
       await user.setUser();
-      await freelancer.setFreelancer(user);
+      await freelancer.setFreelancer(user2);
       //print("freelancer.certifications");
       //print(freelancer.certifications);
     } catch (e) {
@@ -76,6 +76,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context, listen: false);
+    var user2 = Provider.of<User>(context, listen: false).userId;
     var freelancer = Provider.of<Freelancer>(context, listen: false);
     var project = Provider.of<Projects>(context, listen: false);
     Widget tryAgainScreen(String msg) {
@@ -109,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     return FutureBuilder(
-      future: setUserLocal(user, freelancer, project),
+      future: setUserLocal(user2,user, freelancer, project),
       builder: (ctx, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
           // return Scaffold(
@@ -159,7 +160,7 @@ class _MainScreenState extends State<MainScreen> {
             // ),
             drawer: AppDrawer(),
             body: FutureBuilder(
-              future: setUserLocal(user, freelancer, project),
+              future: setUserLocal(user2,user, freelancer, project),
               builder: (ctx, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return Center(

@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Future<void> setFreelancer() async {
       print('Called');
       await Provider.of<Freelancer>(context, listen: false)
-          .setFreelancer(userInfo);
+          .setFreelancer(userInfo.userId);
     }
 
     setFreelancer();
@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Provider.of<User>(context, listen: false).userId;
 
                       await userInfo2.delelteSkill(userId, tags[index]);
-                      setState(() {});
+                      setState(() {setFreelancer();});
                     },
                     icon: Icon(
                       Icons.cancel,
@@ -155,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           await userInfo2.deleltePortfolio(
                               userId, images[index]);
-                          setState(() {});
+                          setState(() {setFreelancer();});
                         }),
                   ),
                 ],
@@ -165,7 +165,19 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
-
+// return FutureBuilder(
+//         future: setInfo(),
+//         // _getData(),
+//         builder: (ctx, snap) {
+//           if (snap.connectionState == ConnectionState.waiting) {
+//             print('hello');
+//             return Scaffold(body: Center(child: CircularProgressIndicator()));
+//           } else {
+//             if (snap.hasError) {
+//               return Text(snap.error);
+//             } else {
+//               //final loadedProjects = snap.data as List<Freelancer>;
+//               print('Reached here');
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -492,7 +504,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               Navigator.of(context)
                                   .pushNamed(AddPortfolio.routeName)
-                                  .then((value) => setState(() {}));
+                                  .then((value) => setState(() {setFreelancer();}));
                             },
                           ),
                         ),
@@ -752,7 +764,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: FlatButton(
                               onPressed: () {
                                 Navigator.of(context)
-                                    .pushNamed(AddPortfolio.routeName)
+                                    .pushNamed(AddCertificate.routeName)
                                     .then((value) => setState(() {}));
                               },
                               child: Text(
