@@ -78,7 +78,7 @@ class _AddPortfolioState extends State<AddPortfolio> {
                 //     ?AssetImage('assets/logo.jpg',)
                 //     : 
                     //:NetworkImage(dpurl),
-            radius: 60,
+            radius: 70,
           ),
           Positioned(
             right: 0.0,

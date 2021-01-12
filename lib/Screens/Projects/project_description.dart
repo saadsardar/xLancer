@@ -36,11 +36,15 @@ class ProjectDescription extends StatelessWidget {
     //final project = Provider.of<Projects>(context, listen: false);
     final user = Provider.of<User>(context, listen: false);
     bool isApproved = false;
-    bool isComplete = false;
+    //bool isComplete = false;
     Future<bool> checkifapplied() async {
       var isapplied = await apply.isApplied(id, user.userId);
-      isApproved = await apply.isApprove(id, user.userId);
-      isComplete = await apply.isComplete(id, user.userId);
+      if (isapplied) {
+        isApproved = await apply.isApprove(id, user.userId);
+        print("THEEE $isApproved");
+        //isComplete = await apply.isComplete(id, user.userId);
+      }
+
       return isapplied;
     }
 
@@ -352,7 +356,8 @@ class ProjectDescription extends StatelessWidget {
                                             fontSize: 24,
                                           ),
                                         )
-                                      : Text(
+                                      : 
+                                      Text(
                                           "Applied",
                                           //:"Applied",
                                           style: TextStyle(
@@ -370,35 +375,41 @@ class ProjectDescription extends StatelessWidget {
                       SizedBox(
                         height: 50,
                       ),
-                      if (isApproved)
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: RawMaterialButton(
-                            shape: new RoundedRectangleBorder(),
-                            elevation: 0.0,
-                            onPressed: () async {
-                              await apply.finishProject(id, user.userId);
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                              width: 200,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: Theme.of(context).accentColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Mark as Done",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
+
+                      //if()
+                      if (snap.data == true && isApproved)
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: RawMaterialButton(
+                                shape: new RoundedRectangleBorder(),
+                                elevation: 0.0,
+                                onPressed: () async {
+                                  await apply.finishProject(id, user.userId);
+                                  Navigator.of(context).pop();
+                                },
+                                child: Container(
+                                  width: 200,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Mark as Done",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                     ],
                   ),

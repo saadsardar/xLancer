@@ -25,9 +25,10 @@ class _ProfileItemState extends State<ProfileItem> {
     Future<List<Freelancer>> getRequests() async {
       //print("00");
       List<String> list = await pinfo.getRequests(args.id);
-      //print('object111');
-      //print(list);
+      // print('object111');
+      // print(list);
       List<Freelancer> list2 = await freelancers.getRequestedUsers(list);
+      print(list2);
       return list2;
     }
 

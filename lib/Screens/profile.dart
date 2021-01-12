@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     setFreelancer();
-    final userInfo2 = Provider.of<Freelancer>(context, listen: false);
+    final userInfo2 = Provider.of<Freelancer>(context);
     print("userInfo2.portfolio");
     print(userInfo2.skills);
     //buildPortfolio() {}
@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
                     child: Text(
-                      tags[index],
+                      tags[index].toString(),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -90,7 +90,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           Provider.of<User>(context, listen: false).userId;
 
                       await userInfo2.delelteSkill(userId, tags[index]);
-                      setState(() {setFreelancer();});
+                      setState(() {
+                        setFreelancer();
+                      });
                     },
                     icon: Icon(
                       Icons.cancel,
@@ -155,7 +157,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           await userInfo2.deleltePortfolio(
                               userId, images[index]);
-                          setState(() {setFreelancer();});
+                          setState(() {
+                            setFreelancer();
+                          });
                         }),
                   ),
                 ],
@@ -165,6 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
+
 // return FutureBuilder(
 //         future: setInfo(),
 //         // _getData(),
@@ -504,7 +509,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               Navigator.of(context)
                                   .pushNamed(AddPortfolio.routeName)
-                                  .then((value) => setState(() {setFreelancer();}));
+                                  .then((value) => setState(() {
+                                        setFreelancer();
+                                      }));
                             },
                           ),
                         ),
@@ -620,8 +627,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             // .pushNamed(EditSkills.routeName)
                             // .then((value) => setState(() {}));
                             Navigator.of(context)
-                                .pushNamed(EditSkills.routeName)
-                                .then((value) => setState(() {}));
+                                .pushNamed(EditSkills.routeName);
+                                setState(() {
+                                  
+                                });
                           },
                         ),
                       ),
@@ -671,7 +680,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       )
                     : //Text("data"),
-                    buildSkills(userInfo2.skills),
+                    buildSkills(userInfo2.getSkills()),
               ],
             ),
 

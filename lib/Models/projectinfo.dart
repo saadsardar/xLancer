@@ -33,6 +33,7 @@ class ProjectsInfo with ChangeNotifier {
         'pid': appliedProject['pid'],
         'ownerId': appliedProject['ownerId'],
         'appId': appliedProject['appId'],
+        'approve': false,
 
         // _projectList.add(
         //   ProjectInfo(
@@ -291,7 +292,7 @@ class ProjectsInfo with ChangeNotifier {
           if (pid == map['pid']) {
             //print('Adding0');
             _requestList.add(map['appId']);
-            // print(_appliedprojectList);
+            //print("${map['appId']}");
           }
         },
       );

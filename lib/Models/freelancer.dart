@@ -38,10 +38,12 @@ class Freelancer extends ChangeNotifier {
         this.title = json['title'],
         this.rate = json['rate'],
         this.summary = json['summary'],
-        this.portfolio = json['portfolio'],
-        this.skills = json['skills'],
-        this.ratings = json['summary'],
-        this.certifications = json['portfolio'];
+        //this.portfolio = json['portfolio'],
+        //this.skills = json['skills'],
+        this.ratings = json['summary'];
+  //this.certifications = json['certifications'];
+// }
+// class Freelancers extends ChangeNotifier{
   Future<String> setFreelancer(String user) async {
     List<String> rand = [];
     List<String> rand2 = [];
@@ -51,13 +53,13 @@ class Freelancer extends ChangeNotifier {
     // portfolio.remove(true);
     // certifications.remove(true);
 
-    // print('User ID Before: $userId');
+    print('User ID Before: $user');
 
     //userId = Provider.of<User>(context, listen: false).userId;
     try {
       final userSnap = await FirebaseFirestore.instance
           .collection('freelancers')
-          .doc(userId)
+          .doc(user)
           .get();
       // print('name is name');
 
@@ -79,7 +81,7 @@ class Freelancer extends ChangeNotifier {
       print(' userid of saad $user');
 //print('name is name');
       final dataSnapshot0 = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/skills/')
+          .collection('freelancers/$user/skills/')
           .get();
       //print('Fetech $skills');
       print('Khan saab');
@@ -99,7 +101,7 @@ class Freelancer extends ChangeNotifier {
       print("Getting links");
       skills = rand0;
       final dataSnapshot = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/certicates/')
+          .collection('freelancers/$user/certicates/')
           .get();
       //print('Fetech $skills');
       final data = dataSnapshot.docs;
@@ -117,7 +119,7 @@ class Freelancer extends ChangeNotifier {
       certifications = rand;
       // print("Getting links222");
       final dataSnapshot2 = await FirebaseFirestore.instance
-          .collection('freelancers/$userId/portfolio/')
+          .collection('freelancers/$user/portfolio/')
           .get();
       final data2 = dataSnapshot2.docs;
       data2.forEach(
@@ -185,7 +187,7 @@ class Freelancer extends ChangeNotifier {
       (e) {
         var map1 = e.data();
         //map['id'] = e.id;
-        s.add(map1['link']);
+        s.add(map1['skills']);
         // print("Getting links");
         //print(map2['link']);
       },
@@ -338,6 +340,10 @@ class Freelancer extends ChangeNotifier {
     return;
   }
 
+  List<String> getSkills() {
+    return skills;
+  }
+
   Future<void> addSkills(String userID, Map<String, dynamic> userInfo) async {
     try {
       await FirebaseFirestore.instance
@@ -347,7 +353,7 @@ class Freelancer extends ChangeNotifier {
           'skills': userInfo['tag'],
         },
       );
-      skills.add(userInfo['skills']);
+      skills.add(userInfo['tag']);
     } catch (e) {
       print(e);
     }
@@ -379,6 +385,7 @@ class Freelancer extends ChangeNotifier {
       print(e);
     }
     print('Deleting skill done');
+    notifyListeners();
   }
 
   Future<void> deleltePortfolio(String userID, String link) async {
@@ -460,7 +467,9 @@ class Freelancer extends ChangeNotifier {
           var map = e.data();
           map['id'] = e.id;
           if (userslist.contains(map['id'])) {
+            print("maps ${map['id']}");
             rand0.add(Freelancer.fromJson(map));
+            print("maps}");
           }
         },
       );
