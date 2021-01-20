@@ -185,14 +185,14 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
         // _getData(),
         builder: (ctx, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
-            print('hello');
+            //print('hello');
             return Scaffold(body: Center(child: CircularProgressIndicator()));
           } else {
             if (snap.hasError) {
               return Text(snap.error);
             } else {
               //final loadedProjects = snap.data as List<Freelancer>;
-              print('Reached here');
+              //print('Reached here');
               // if (loadedProjects.isEmpty) {
               //   return Scaffold(
               //       body: Center(
@@ -242,7 +242,6 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                     Container(
                       child: Row(
                         children: [
-                          Text(widget.name.toString()),
                           CircleAvatar(
                             radius: 40,
                             backgroundImage: widget.picture == ''
@@ -269,32 +268,37 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Row(
-                                    children: [
-                                      // Text(
-                                      //   widget.name,
-                                      //   style: TextStyle(
-                                      //     fontSize: 18,
-                                      //     fontWeight: FontWeight.bold,
-                                      //   ),
-                                      // ),
-                                      IconButton(
-                                        color: Theme.of(context).accentColor,
-                                        icon: Icon(
-                                          Icons.edit,
-                                          size: 18,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushNamed(EditName.routeName)
-                                              .then((value) => setState(() {}));
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                // Padding(
+                                //   padding: const EdgeInsets.all(6.0),
+                                //   child: Row(
+                                //     children: [
+                                //       // Text(
+                                //       //   widget.name,
+                                //       //   style: TextStyle(
+                                //       //     fontSize: 18,
+                                //       //     fontWeight: FontWeight.bold,
+                                //       //   ),
+                                //       // ),
+                                //       // IconButton(
+                                //       //   color: Theme.of(context).accentColor,
+                                //       //   icon: Icon(
+                                //       //     Icons.edit,
+                                //       //     size: 18,
+                                //       //   ),
+                                //       //   onPressed: () {
+                                //       //     Navigator.of(context)
+                                //       //         .pushNamed(EditName.routeName)
+                                //       //         .then((value) => setState(() {}));
+                                //       //   },
+                                //       // ),
+                                //     ],
+                                //   ),
+                                // ),
+                                Text(
+                                  widget.name.toString(),
+                                  style: TextStyle(fontSize: 25),
                                 ),
+
                                 Row(
                                   //mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -315,7 +319,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                         widget.location ?? 'Not availible',
                                         // 'Karachi, Pakistan',
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -358,10 +362,10 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                 //     ? null
                                 //:
                                 Text(
-                                  widget.title ?? 'Add Title',
+                                  widget.title ?? 'N/A',
                                   //'Flutter Developer',
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -405,7 +409,7 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                   widget.rate ?? 'Add your Rate',
                                   //'9.00/hr',
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -443,10 +447,10 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                                       //  ? null
                                       //:
                                       Text(
-                                    widget.summary ?? 'Add Summary',
+                                    widget.summary ?? 'N/A',
                                     //'dsvbihabicbajcoaocadocbadobcoadbuoabcoa',
                                     style: TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 25,
                                       //fontWeight: FontWeight.bold,
                                     ),
                                   ),
