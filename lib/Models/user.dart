@@ -125,6 +125,7 @@ class User extends ChangeNotifier {
           'name': name,
           'picture': picture,
           'title': 'Add your Title',
+          'phoneNumber': userInfo['phone'],
           'location': 'Add Location',
           'rate': '0.00',
           'summary': 'Add your summary',

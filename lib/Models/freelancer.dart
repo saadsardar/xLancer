@@ -10,10 +10,12 @@ class Freelancer extends ChangeNotifier {
   String location;
   String title;
   String rate;
+  String phoneNumber;
   String summary;
   List<String> portfolio;
   List<String> skills;
   List<String> certifications;
+
   //List<String> comments;
   String ratings;
   Freelancer({
@@ -26,6 +28,7 @@ class Freelancer extends ChangeNotifier {
     this.summary,
     this.portfolio,
     this.skills,
+    this.phoneNumber,
     //this.comments,
     this.ratings,
     this.certifications,
@@ -36,6 +39,7 @@ class Freelancer extends ChangeNotifier {
         this.picture = json['picture'],
         this.location = json['location'],
         this.title = json['title'],
+        this.phoneNumber = json['phoneNumber'],
         this.rate = json['rate'],
         this.summary = json['summary'],
         //this.portfolio = json['portfolio'],
@@ -70,6 +74,7 @@ class Freelancer extends ChangeNotifier {
       //print(' userid of saad $user');
       picture = userInfo['picture'];
       //print(' userid of saad $user');
+      phoneNumber = userInfo['phoneNumber'];
       location = userInfo['location'];
       title = userInfo['title'];
       summary = userInfo['summary'];

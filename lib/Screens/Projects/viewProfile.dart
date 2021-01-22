@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xlancer/Models/freelancer.dart';
 import 'package:xlancer/Models/projectinfo.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'package:xlancer/Models/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:xlancer/ProfileScreens/certficates.dart';
@@ -18,12 +19,14 @@ class ViewProfilePage extends StatefulWidget {
   String location;
   String title;
   String rate;
+  String phoneNumber;
   String summary;
   List<String> portfolio;
   List<String> skills;
+  String ratings;
   List<String> certifications;
   //List<String> comments;
-  String ratings;
+  // String phoneNumber;
   ViewProfilePage(
     this.pid,
     this.userId,
@@ -32,10 +35,10 @@ class ViewProfilePage extends StatefulWidget {
     this.location,
     this.title,
     this.rate,
+    this.phoneNumber,
     this.summary,
     this.portfolio,
     this.skills,
-    //this.comments,
     this.ratings,
     this.certifications,
   );
@@ -200,6 +203,27 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
               //   ));
               // } else {
               return Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    isApproved == true
+                        ? FlutterOpenWhatsapp.sendSingleMessage(
+                            widget.phoneNumber, "Hello")
+                        : null;
+                  },
+                  child: CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: AssetImage(
+                      'assets/whatsapp.png',
+                    ),
+                    //backgroundColor: Colors.transparent,
+                  ),
+                  //backgroundColor: Colors.black,
+                  tooltip: 'Chat on Whatsapp',
+                  elevation: 5,
+                  splashColor: Colors.grey,
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endFloat,
                 appBar: AppBar(
                   actions: [
                     isApproved == false

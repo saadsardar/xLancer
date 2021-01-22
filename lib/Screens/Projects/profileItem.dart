@@ -68,6 +68,7 @@ class _ProfileItemState extends State<ProfileItem> {
                               loadedProjects[i].location,
                               loadedProjects[i].title,
                               loadedProjects[i].rate,
+                              loadedProjects[i].phoneNumber,
                               loadedProjects[i].summary,
                               loadedProjects[i].portfolio,
                               loadedProjects[i].skills,
